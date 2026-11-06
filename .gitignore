@@ -1,0 +1,14 @@
+# وابستگی‌ها (بعد از نصب مجدد با npm install برمی‌گردند)
+node_modules/
+
+# خروجی ساخت سایت
+dist/
+
+# فایل‌های موقت Astro
+.astro/
+
+# فایل‌های سیستمی
+.DS_Store
+Thumbs.db
+*.log
+.zcode/ 

@@ -1,0 +1,18 @@
+---
+// صفحهٔ هر مقالهٔ بخش «برای بیماران»
+// (نشانی اینترنتی هر مقاله از نام فایل آن ساخته می‌شود)
+import { getCollection } from 'astro:content';
+import ArticleView from '../../components/ArticleView.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('patients', (p) => !p.data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<ArticleView post={post} />

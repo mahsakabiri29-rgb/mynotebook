@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════════════
+   سامانهٔ طراحی — «مجلهٔ دندان‌پزشکی من»
+   الهام: مجلات علمی و نشریات مستقل؛ کاغذ گرم، جوهر تیره، فضای سفید فراخ.
+
+   برای تغییر حال‌وهوای رنگی سایت، فقط مقدارهای بخش «رنگ‌ها» را عوض کنید.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* رنگ‌ها */
+  --paper: #faf8f4;        /* پس‌زمینهٔ کاغذی گرم */
+  --raised: #ffffff;       /* سطح کارت‌ها */
+  --ink: #23211c;          /* متن اصلی (جوهر) */
+  --ink-soft: #6e6858;     /* متن فرعی */
+  --ink-faint: #9b9485;    /* متن کم‌رنگ */
+  --line: #e7e2d7;         /* خط‌های مویی */
+  --line-strong: #d3ccbc;  /* خط تأکیدی */
+  --accent: #2e3a6b;       /* سرمه‌ای نیلی */
+  --accent-deep: #1f2849;  /* سرمه‌ای تیره (هاور) */
+  --accent-wash: #eef0f6;  /* ته‌رنگ ملایم سرمه‌ای */
+
+  /* تایپوگرافی */
+  --font-sans: 'Vazirmatn', 'Segoe UI', Tahoma, Arial, sans-serif;
+
+  /* اندازه‌ها و فاصله‌ها */
+  --container: 72rem;              /* بیشینهٔ عرض کل صفحه */
+  --prose: 37rem;                  /* عرض ستون مطالعهٔ مقاله */
+  --gutter: clamp(1.25rem, 5vw, 2.5rem);
+  --radius: 14px;
+}
+
+/* ── پایه ─────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;   /* ≈ 17px — اندازهٔ راحت برای مطالعهٔ متن فارسی */
+  line-height: 1.95;      /* ارتفاع سطر فراخ؛ لازمهٔ خوانایی خط فارسی */
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  flex: 1;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.5;       /* سرفصل‌ها فشرده‌تر از متن */
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* لینک‌ها */
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+a:hover {
+  color: var(--accent-deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: #d9def0;
+}
+
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* ── ابزارهای مشترک ───────────────────────────────────────── */
+
+.container {
+  max-inline-size: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* برچسب کوچک بالای عنوان‌ها — با خط تزئینی کوتاه */
+.kicker {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-block: 0 0.6rem;
+}
+
+.kicker::before {
+  content: '';
+  display: inline-block;
+  inline-size: 1.4rem;
+  block-size: 2px;
+  background: var(--accent);
+  margin-inline-end: 0.55rem;
+  vertical-align: middle;
+  border-radius: 1px;
+}
+
+/* خط اطلاعات مقاله: تاریخ · زمان مطالعه */
+.meta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55em;
+  align-items: center;
+}
+
+/* ── متن مقاله (خروجی مارک‌داون) ──────────────────────────── */
+
+.prose {
+  font-size: 1.0625rem;
+}
+
+.prose > * + * {
+  margin-block-start: 1.05em;
+}
+
+.prose h2 {
+  font-size: 1.42rem;
+  margin-block: 2.4em 0.7em;
+}
+
+.prose h3 {
+  font-size: 1.18rem;
+  margin-block: 1.9em 0.55em;
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-block-start: 0;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.6em;
+}
+
+.prose li + li {
+  margin-block-start: 0.45em;
+}
+
+.prose blockquote {
+  margin-block: 1.6em;
+  padding: 0.9em 1.3em;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--accent-wash);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--ink);
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose code {
+  font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+  font-size: 0.88em;
+  direction: ltr;
+  unicode-bidi: embed;
+  background: #f0ece2;
+  padding: 0.12em 0.4em;
+  border-radius: 6px;
+}
+
+.prose pre {
+  direction: ltr;
+  text-align: left;
+  background: #20232e;
+  color: #e8e8e8;
+  padding: 1em 1.25em;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+  border-block-start: 1px solid var(--line);
+  padding: 0.6em 0.8em;
+  text-align: start;
+  vertical-align: top;
+}
+
+.prose th {
+  border-block-end: 2px solid var(--line-strong);
+  font-weight: 700;
+}
+
+.prose tr:last-child td {
+  border-block-end: 1px solid var(--line);
+}
+
+.prose hr {
+  border: none;
+  border-block-start: 1px solid var(--line);
+  margin-block: 2.6em;
+}
+
+.prose img {
+  max-inline-size: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* ── کاهش حرکت برای کاربرانی که ترجیح می‌دهند ─────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

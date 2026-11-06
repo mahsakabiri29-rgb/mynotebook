@@ -1,0 +1,102 @@
+---
+// نمایش یک مقاله: سرصفحه (عنوان، خلاصه، تاریخ، زمان مطالعه) + متن + برچسب‌ها + بازگشت
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { SECTIONS, SITE, type SectionKey } from '../config';
+import { faDate, readingMinutes, toFa } from '../lib/format';
+
+interface Props {
+  post: CollectionEntry<'patients' | 'professionals'>;
+}
+
+const { post } = Astro.props;
+const section = SECTIONS[post.collection as SectionKey];
+const { Content } = await render(post);
+const minutes = readingMinutes(post.body ?? '');
+---
+
+<Base title={`${post.data.title} — ${SITE.name}`} description={post.data.description}>
+  <article class="article container">
+    <header class="head">
+      <p class="kicker">{section.title}</p>
+      <h1>{post.data.title}</h1>
+      <p class="dek">{post.data.description}</p>
+      <p class="meta">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {faDate(post.data.pubDate)}
+        </time>
+        <span aria-hidden="true">·</span>
+        <span>{toFa(minutes)} دقیقه مطالعه</span>
+      </p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      post.data.tags.length > 0 && (
+        <ul class="tags" aria-label="برچسب‌ها">
+          {post.data.tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <p class="back">
+      <a href={section.href}>بازگشت به {section.title}</a>
+    </p>
+  </article>
+</Base>
+
+<style>
+  .article {
+    max-inline-size: calc(var(--prose) + 2 * var(--gutter));
+  }
+
+  .head {
+    padding-block: clamp(3rem, 8vh, 4.25rem) 2.25rem;
+  }
+
+  .head h1 {
+    font-size: clamp(1.8rem, 1.35rem + 2.2vw, 2.7rem);
+    font-weight: 800;
+  }
+
+  .dek {
+    margin-block: 1rem 1.35rem;
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+
+  .meta {
+    padding-block-end: 2.5rem;
+    border-block-end: 1px solid var(--line);
+    margin-block-end: 2.5rem;
+  }
+
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin-block: 3rem 0 0;
+  }
+
+  .tags li {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0.15em 0.85em;
+  }
+
+  .back {
+    margin-block: 3rem;
+    font-size: 0.95rem;
+  }
+</style>

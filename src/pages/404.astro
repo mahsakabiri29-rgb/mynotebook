@@ -1,0 +1,39 @@
+---
+// صفحهٔ «پیدا نشد»
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+---
+
+<Base title={`صفحه پیدا نشد — ${SITE.name}`}>
+  <section class="page container">
+    <p class="kicker">خطای ۴۰۴</p>
+    <h1>این صفحه پیدا نشد</h1>
+    <p class="note">
+      نشانی‌ای که دنبالش بودید وجود ندارد، یا مقاله جابه‌جا یا حذف شده است.
+    </p>
+    <p class="action">
+      <a href="/">بازگشت به صفحهٔ اصلی</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .page {
+    padding-block: clamp(4rem, 12vh, 6.5rem) 3rem;
+    max-inline-size: 44rem;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.5rem + 2vw, 2.6rem);
+    font-weight: 800;
+    margin-block-end: 1rem;
+  }
+
+  .note {
+    color: var(--ink-soft);
+  }
+
+  .action {
+    margin-block-start: 1.5rem;
+  }
+</style>

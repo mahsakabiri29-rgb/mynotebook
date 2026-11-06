@@ -1,0 +1,96 @@
+---
+// سربرگ سایت: نام مجله + ناوبری اصلی
+import { SITE } from '../config';
+
+const nav = [
+  { href: '/', label: 'خانه' },
+  { href: '/patients', label: 'برای بیماران' },
+  { href: '/professionals', label: 'برای دندان‌پزشکان' },
+  { href: '/about', label: 'درباره' },
+];
+
+const current = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? current === '/' : current.startsWith(href);
+---
+
+<header class="masthead">
+  <div class="container inner">
+    <a class="brand" href="/">{SITE.name}</a>
+    <nav aria-label="ناوبری اصلی">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={{ active: isActive(item.href) }}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem 2rem;
+    padding-block: 0.9rem;
+  }
+
+  .brand {
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand:hover {
+    color: var(--accent);
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding-block: 0.2rem;
+  }
+
+  nav a:hover {
+    color: var(--ink);
+  }
+
+  nav a.active {
+    color: var(--accent);
+    font-weight: 700;
+  }
+</style>

@@ -1,0 +1,12 @@
+---
+// فهرست مقاله‌های بخش «برای بیماران»
+import Base from '../../layouts/Base.astro';
+import SectionIndex from '../../components/SectionIndex.astro';
+import { SITE, SECTIONS } from '../../config';
+
+const meta = SECTIONS.patients;
+---
+
+<Base title={`${meta.title} — ${SITE.name}`} description={meta.description}>
+  <SectionIndex section="patients" />
+</Base>

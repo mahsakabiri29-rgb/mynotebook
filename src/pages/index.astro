@@ -1,0 +1,164 @@
+---
+// صفحهٔ اصلی: معرفی کوتاه مجله + در ورودی دو بخش + تازه‌ترین مقاله‌ها
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { SITE, SECTIONS } from '../config';
+
+async function latest(collection: 'patients' | 'professionals') {
+  return (await getCollection(collection, (p) => !p.data.draft))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
+}
+
+const latestPatients = await latest('patients');
+const latestProfessionals = await latest('professionals');
+---
+
+<Base title={`${SITE.name} — ${SITE.tagline}`}>
+  <section class="hero container">
+    <p class="kicker">مجلهٔ شخصی دندان‌پزشکی</p>
+    <h1 class="title">{SITE.name}</h1>
+    <p class="lede">
+      اینجا دانش دندان‌پزشکی دو روایت دارد: روایتی ساده و قابل‌فهم برای بیماران،
+      و روایتی مستند و عمیق برای همکاران — هر دو بر پایهٔ علم و شواهد.
+    </p>
+  </section>
+
+  <section class="container gates" aria-label="بخش‌های سایت">
+    <a class="gate" href={SECTIONS.patients.href}>
+      <h2>{SECTIONS.patients.title}</h2>
+      <p>{SECTIONS.patients.intro}</p>
+      <span class="more">مشاهدهٔ مقاله‌ها ←</span>
+    </a>
+    <a class="gate" href={SECTIONS.professionals.href}>
+      <h2>{SECTIONS.professionals.title}</h2>
+      <p>{SECTIONS.professionals.intro}</p>
+      <span class="more">مشاهدهٔ مقاله‌ها ←</span>
+    </a>
+  </section>
+
+  <section class="container latest" aria-label="تازه‌ترین مقاله‌ها">
+    <div class="column">
+      <h2>تازه‌ترین برای بیماران</h2>
+      <div class="list">
+        {latestPatients.map((post) => <ArticleCard post={post} />)}
+      </div>
+      <a class="all" href={SECTIONS.patients.href}>همهٔ مقاله‌های این بخش ←</a>
+    </div>
+
+    <div class="column">
+      <h2>تازه‌ترین برای دندان‌پزشکان</h2>
+      <div class="list">
+        {latestProfessionals.map((post) => <ArticleCard post={post} />)}
+      </div>
+      <a class="all" href={SECTIONS.professionals.href}>همهٔ مقاله‌های این بخش ←</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── معرفی ── */
+  .hero {
+    padding-block: clamp(4rem, 12vh, 6.5rem) 3.25rem;
+  }
+
+  .title {
+    font-size: clamp(2.3rem, 1.7rem + 3vw, 3.5rem);
+    font-weight: 800;
+    margin-block: 0.4rem 1.25rem;
+  }
+
+  .lede {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-inline-size: 34rem;
+    line-height: 2.05;
+  }
+
+  /* ── در ورودی دو بخش ── */
+  .gates {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1.25rem;
+    padding-block-end: 4rem;
+  }
+
+  .gate {
+    display: block;
+    background: var(--raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.7rem 1.8rem;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .gate:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -20px rgba(35, 33, 28, 0.4);
+  }
+
+  .gate h2 {
+    font-size: 1.3rem;
+    margin-block-end: 0.6rem;
+    color: var(--ink);
+  }
+
+  .gate p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  .more {
+    display: inline-block;
+    margin-block-start: 1.1rem;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .gate:hover .more {
+    color: var(--accent-deep);
+  }
+
+  /* ── تازه‌ترین‌ها ── */
+  .latest {
+    border-block-start: 1px solid var(--line);
+    padding-block: 3rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  @media (min-width: 60rem) {
+    .latest {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .latest h2 {
+    font-size: 1.25rem;
+    padding-block-end: 0.9rem;
+    border-block-end: 2px solid var(--line-strong);
+  }
+
+  .column .list {
+    margin-block-start: 0.75rem;
+  }
+
+  .all {
+    display: inline-block;
+    margin-block-start: 0.9rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+</style>
