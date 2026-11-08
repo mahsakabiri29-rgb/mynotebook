@@ -1,0 +1,17 @@
+---
+// صفحهٔ هر یادداشت «دفترچهٔ یادگیری»
+import { getCollection } from 'astro:content';
+import ArticleView from '../../components/ArticleView.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notebook', (p) => !p.data.draft);
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { post: note },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<ArticleView post={post} />

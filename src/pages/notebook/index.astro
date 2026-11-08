@@ -1,0 +1,58 @@
+---
+// صفحهٔ «دفترچهٔ یادگیری»: همهٔ یادداشت‌های کوتاه، تازه‌به‌قدیم
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { SITE } from '../../config';
+
+const description =
+  'پرسش‌های باز، اشتباه‌ها و درس‌ها، تأمل‌ها و ایده‌های خام — ثبتشده در حین یادگیری، بدون ادعای نتیجهٔ قطعی.';
+
+const notes = (await getCollection('notebook', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Base title={`دفترچهٔ یادگیری — ${SITE.name}`} description={description}>
+  <section class="section-page container">
+    <header class="head">
+      <p class="kicker">موتور یادگیری</p>
+      <h1>دفترچهٔ یادگیری</h1>
+      <p class="intro">{description}</p>
+    </header>
+
+    <div class="list">
+      {notes.map((note) => <ArticleCard post={note} />)}
+      {notes.length === 0 && <p class="empty">هنوز یادداشتی ثبت نشده است.</p>}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section-page {
+    max-inline-size: 58rem;
+    padding-block-start: clamp(3rem, 8vh, 4.5rem);
+  }
+
+  .head h1 {
+    font-size: clamp(2rem, 1.5rem + 2.4vw, 2.9rem);
+    font-weight: 800;
+    margin-block-end: 0.9rem;
+  }
+
+  .intro {
+    color: var(--ink-soft);
+    max-inline-size: 38rem;
+    font-size: 1.05rem;
+  }
+
+  .list {
+    margin-block-start: 2.25rem;
+    padding-block-end: 3rem;
+  }
+
+  .empty {
+    color: var(--ink-faint);
+    padding-block: 2rem;
+  }
+</style>

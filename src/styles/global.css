@@ -1,22 +1,23 @@
 /* ═══════════════════════════════════════════════════════════════
-   سامانهٔ طراحی — «مجلهٔ دندان‌پزشکی من»
-   الهام: مجلات علمی و نشریات مستقل؛ کاغذ گرم، جوهر تیره، فضای سفید فراخ.
+   سامانهٔ طراحی — «دفترچهٔ علمی من»
+   سفید خالص، سرمه‌ای عمیق، خاکستری‌های سرد؛ حداقل‌گرا و مجله‌ای.
 
    برای تغییر حال‌وهوای رنگی سایت، فقط مقدارهای بخش «رنگ‌ها» را عوض کنید.
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* رنگ‌ها */
-  --paper: #faf8f4;        /* پس‌زمینهٔ کاغذی گرم */
+  /* رنگ‌ها — پالت سرد: سفید، سرمه‌ای، خاکستری */
+  --paper: #ffffff;        /* پس‌زمینهٔ سفید خالص */
   --raised: #ffffff;       /* سطح کارت‌ها */
-  --ink: #23211c;          /* متن اصلی (جوهر) */
-  --ink-soft: #6e6858;     /* متن فرعی */
-  --ink-faint: #9b9485;    /* متن کم‌رنگ */
-  --line: #e7e2d7;         /* خط‌های مویی */
-  --line-strong: #d3ccbc;  /* خط تأکیدی */
-  --accent: #2e3a6b;       /* سرمه‌ای نیلی */
-  --accent-deep: #1f2849;  /* سرمه‌ای تیره (هاور) */
-  --accent-wash: #eef0f6;  /* ته‌رنگ ملایم سرمه‌ای */
+  --wash: #f7f9fc;         /* ته‌رنگ بسیار ملایم خاکستری-آبی */
+  --ink: #1c212b;          /* متن اصلی (تقریباً سیاهِ سرد) */
+  --ink-soft: #5b6472;     /* متن فرعی (خاکستری سرد) */
+  --ink-faint: #8a93a3;    /* متن کم‌رنگ */
+  --line: #e5e8ee;         /* خط‌های مویی */
+  --line-strong: #cdd3dd;  /* خط تأکیدی */
+  --accent: #1b4079;       /* سرمه‌ای عمیق */
+  --accent-deep: #12305c;  /* سرمه‌ای تیره‌تر (هاور) */
+  --accent-wash: #eef3fa;  /* ته‌رنگ سرمه‌ای */
 
   /* تایپوگرافی */
   --font-sans: 'Vazirmatn', 'Segoe UI', Tahoma, Arial, sans-serif;
@@ -92,7 +93,7 @@ a:hover {
 }
 
 ::selection {
-  background: #d9def0;
+  background: #dce6f5;
 }
 
 [id] {
@@ -126,7 +127,7 @@ a:hover {
   border-radius: 1px;
 }
 
-/* خط اطلاعات مقاله: تاریخ · زمان مطالعه */
+/* خط اطلاعات یادداشت: تاریخ · زمان مطالعه */
 .meta {
   font-size: 0.85rem;
   color: var(--ink-soft);
@@ -136,7 +137,19 @@ a:hover {
   align-items: center;
 }
 
-/* ── متن مقاله (خروجی مارک‌داون) ──────────────────────────── */
+/* نشان نوع یادداشت — «پرسش باز»، «اشتباه و درس» و… */
+.kind-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: 0.05em 0.9em;
+  vertical-align: middle;
+}
+
+/* ── متن یادداشت (خروجی مارک‌داون) ─────────────────────────── */
 
 .prose {
   font-size: 1.0625rem;
@@ -188,7 +201,7 @@ a:hover {
   font-size: 0.88em;
   direction: ltr;
   unicode-bidi: embed;
-  background: #f0ece2;
+  background: #eef1f5;
   padding: 0.12em 0.4em;
   border-radius: 6px;
 }
@@ -245,6 +258,95 @@ a:hover {
   max-inline-size: 100%;
   height: auto;
   border-radius: 10px;
+}
+
+/* تصویر آموزشی با توضیح (figure داخل مارک‌داون) */
+.prose figure {
+  margin-block: 2em;
+  padding: 1.25rem 1rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+  text-align: center;
+}
+
+.prose figure svg {
+  max-inline-size: 100%;
+  height: auto;
+}
+
+.prose figcaption {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  margin-block-start: 0.6rem;
+  text-align: center;
+}
+
+/* ── بلوک‌های «صداقت»: شواهد / برداشت من / تجربه / فرضیه ──── */
+
+.md-block {
+  border-radius: 10px;
+  padding: 0.95em 1.25em 1.05em;
+  margin-block: 1.5em;
+  font-size: 0.98rem;
+}
+
+.md-block > * + * {
+  margin-block-start: 0.8em;
+}
+
+.md-block::before {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin-block-end: 0.45em;
+}
+
+/* شواهد علمی منتشرشده — سرمه‌ایِ روشن، خط ممتد */
+.md-block-evidence {
+  background: var(--accent-wash);
+  border: 1px solid #c7d6ee;
+}
+
+.md-block-evidence::before {
+  content: 'شواهد علمی منتشرشده';
+  color: var(--accent);
+}
+
+/* برداشت و تفسیر شخصی — خط‌چین، بدون ته‌رنگ */
+.md-block-interpretation {
+  background: var(--paper);
+  border: 1px dashed var(--line-strong);
+}
+
+.md-block-interpretation::before {
+  content: 'برداشت من — تفسیر شخصی، نه نتیجهٔ قطعی';
+  color: var(--ink-soft);
+}
+
+/* تجربهٔ بالینی — نوار سرمه‌ای در سمت راست */
+.md-block-experience {
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--accent);
+}
+
+.md-block-experience::before {
+  content: 'تجربهٔ بالینی خودم';
+  color: var(--accent);
+}
+
+/* فرضیهٔ بررسی‌نشده — خط‌چین سرمه‌ای */
+.md-block-hypothesis {
+  background: var(--paper);
+  border: 1px dashed #9db4d8;
+}
+
+.md-block-hypothesis::before {
+  content: 'فرضیهٔ بررسی‌نشده — پرسش، نه ادعا';
+  color: var(--accent-deep);
 }
 
 /* ── کاهش حرکت برای کاربرانی که ترجیح می‌دهند ─────────────── */

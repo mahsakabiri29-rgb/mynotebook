@@ -1,5 +1,5 @@
 ---
-// پاورقی سایت: هویت مجله + یادداشت حقوقی آموزشی
+// پاورقی سایت: نویسنده + هویت دفترچه + یادداشت حقوقی آموزشی
 import { SITE } from '../config';
 import { faYear } from '../lib/format';
 ---
@@ -7,14 +7,15 @@ import { faYear } from '../lib/format';
 <footer class="site-footer">
   <div class="container inner">
     <div class="identity">
-      <p class="name">{SITE.name}</p>
+      <p class="name">{SITE.author.name}</p>
+      <p class="role">{SITE.author.title}</p>
       <p class="tagline">{SITE.tagline}</p>
     </div>
     <div class="colophon">
       <p class="note">
-        محتوای این سایت تنها برای مقاصد آموزشی است و جایگزین معاینه، تشخیص و مشاورهٔ دندان‌پزشک نیست.
+        محتوای این دفترچه صرفاً یادداشت یادگیری و مقاصد آموزشی است؛ جایگزین معاینه، تشخیص و مشاورهٔ دندان‌پزشک نیست.
       </p>
-      <p class="copy">© {faYear()} {SITE.name}</p>
+      <p class="copy">© {faYear()} {SITE.author.name}</p>
     </div>
   </div>
 </footer>
@@ -48,10 +49,16 @@ import { faYear } from '../lib/format';
     font-size: 1.05rem;
   }
 
+  .role {
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-block-start: 0.2rem;
+  }
+
   .tagline {
     color: var(--ink-soft);
     font-size: 0.92rem;
-    margin-block-start: 0.35rem;
+    margin-block-start: 0.45rem;
   }
 
   .note {

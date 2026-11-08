@@ -1,58 +1,64 @@
 ---
-// صفحهٔ اصلی: معرفی کوتاه مجله + در ورودی دو بخش + تازه‌ترین مقاله‌ها
+// صفحهٔ اصلی: فلسفهٔ دفترچه + در ورودی بخش‌ها + تازه‌ترین یادداشت‌ها
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { SITE, SECTIONS } from '../config';
 
-async function latest(collection: 'patients' | 'professionals') {
-  return (await getCollection(collection, (p) => !p.data.draft))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 3);
-}
-
-const latestPatients = await latest('patients');
-const latestProfessionals = await latest('professionals');
+// تازه‌ترین‌ها از هر چهار مجموعه، ترکیبی
+const all = (
+  await Promise.all([
+    getCollection('everyone', (p) => !p.data.draft),
+    getCollection('professionals', (p) => !p.data.draft),
+    getCollection('failsafe', (p) => !p.data.draft),
+    getCollection('notebook', (p) => !p.data.draft),
+  ])
+).flat();
+const latest = all
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
 ---
 
 <Base title={`${SITE.name} — ${SITE.tagline}`}>
   <section class="hero container">
-    <p class="kicker">مجلهٔ شخصی دندان‌پزشکی</p>
+    <p class="kicker">دفترچهٔ شخصی یادگیری</p>
     <h1 class="title">{SITE.name}</h1>
     <p class="lede">
-      اینجا دانش دندان‌پزشکی دو روایت دارد: روایتی ساده و قابل‌فهم برای بیماران،
-      و روایتی مستند و عمیق برای همکاران — هر دو بر پایهٔ علم و شواهد.
+      اینجا دفترچهٔ یادگیری من است: مقاله‌هایی که می‌خوانم، پرسش‌های بازم،
+      اشتباه‌ها و درس‌هایم — با جداشدنِ صریحِ «شواهد علمی» از «برداشت شخصی».
+      این دفترچه اول برای رشد من است؛ نه تبلیغ و نه نمایش تخصص.
     </p>
   </section>
 
   <section class="container gates" aria-label="بخش‌های سایت">
-    <a class="gate" href={SECTIONS.patients.href}>
-      <h2>{SECTIONS.patients.title}</h2>
-      <p>{SECTIONS.patients.intro}</p>
-      <span class="more">مشاهدهٔ مقاله‌ها ←</span>
+    <a class="gate" href={SECTIONS.everyone.href}>
+      <h2>{SECTIONS.everyone.title}</h2>
+      <p>{SECTIONS.everyone.intro}</p>
+      <span class="more">مشاهدهٔ یادداشت‌ها ←</span>
     </a>
     <a class="gate" href={SECTIONS.professionals.href}>
       <h2>{SECTIONS.professionals.title}</h2>
-      <p>{SECTIONS.professionals.intro}</p>
-      <span class="more">مشاهدهٔ مقاله‌ها ←</span>
+      <p>
+        مقالات علمی، مرور ادبیات و یادداشت‌های بالینی — از جمله پروژهٔ پژوهشی
+        Failsafe دربارهٔ برنامه‌ریزی برای شکست درمان.
+      </p>
+      <span class="more">مشاهدهٔ یادداشت‌ها ←</span>
+    </a>
+    <a class="gate" href="/notebook">
+      <h2>دفترچهٔ یادگیری</h2>
+      <p>
+        یادداشت‌های کوتاه: پرسش‌های باز، اشتباه‌ها و درس‌ها، تأمل‌ها و ایده‌های
+        خام — ثبتشده در حین یادگیری.
+      </p>
+      <span class="more">مشاهدهٔ دفترچه ←</span>
     </a>
   </section>
 
-  <section class="container latest" aria-label="تازه‌ترین مقاله‌ها">
-    <div class="column">
-      <h2>تازه‌ترین برای بیماران</h2>
-      <div class="list">
-        {latestPatients.map((post) => <ArticleCard post={post} />)}
-      </div>
-      <a class="all" href={SECTIONS.patients.href}>همهٔ مقاله‌های این بخش ←</a>
-    </div>
-
-    <div class="column">
-      <h2>تازه‌ترین برای دندان‌پزشکان</h2>
-      <div class="list">
-        {latestProfessionals.map((post) => <ArticleCard post={post} />)}
-      </div>
-      <a class="all" href={SECTIONS.professionals.href}>همهٔ مقاله‌های این بخش ←</a>
+  <section class="container latest" aria-label="تازه‌ترین یادداشت‌ها">
+    <h2>تازه‌ترین یادداشت‌ها</h2>
+    <div class="list">
+      {latest.map((post) => <ArticleCard post={post} />)}
+      {latest.length === 0 && <p class="empty">هنوز یادداشتی منتشر نشده است.</p>}
     </div>
   </section>
 </Base>
@@ -72,14 +78,14 @@ const latestProfessionals = await latest('professionals');
   .lede {
     font-size: 1.15rem;
     color: var(--ink-soft);
-    max-inline-size: 34rem;
+    max-inline-size: 36rem;
     line-height: 2.05;
   }
 
-  /* ── در ورودی دو بخش ── */
+  /* ── در ورودی بخش‌ها ── */
   .gates {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
     gap: 1.25rem;
     padding-block-end: 4rem;
   }
@@ -101,18 +107,18 @@ const latestProfessionals = await latest('professionals');
   .gate:hover {
     border-color: var(--accent);
     transform: translateY(-3px);
-    box-shadow: 0 12px 32px -20px rgba(35, 33, 28, 0.4);
+    box-shadow: 0 12px 32px -20px rgba(28, 33, 43, 0.4);
   }
 
   .gate h2 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     margin-block-end: 0.6rem;
     color: var(--ink);
   }
 
   .gate p {
     color: var(--ink-soft);
-    font-size: 0.95rem;
+    font-size: 0.93rem;
     line-height: 1.9;
   }
 
@@ -132,16 +138,6 @@ const latestProfessionals = await latest('professionals');
   .latest {
     border-block-start: 1px solid var(--line);
     padding-block: 3rem 2rem;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.75rem;
-  }
-
-  @media (min-width: 60rem) {
-    .latest {
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
   }
 
   .latest h2 {
@@ -150,15 +146,12 @@ const latestProfessionals = await latest('professionals');
     border-block-end: 2px solid var(--line-strong);
   }
 
-  .column .list {
-    margin-block-start: 0.75rem;
+  .latest .list {
+    margin-block-start: 0.25rem;
   }
 
-  .all {
-    display: inline-block;
-    margin-block-start: 0.9rem;
-    font-size: 0.92rem;
-    font-weight: 600;
-    text-decoration: none;
+  .empty {
+    color: var(--ink-faint);
+    padding-block: 2rem;
   }
 </style>

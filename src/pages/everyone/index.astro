@@ -1,12 +1,12 @@
 ---
-// فهرست مقاله‌های بخش «برای بیماران»
+// فهرست یادداشت‌های بخش «برای همه»
 import Base from '../../layouts/Base.astro';
 import SectionIndex from '../../components/SectionIndex.astro';
 import { SITE, SECTIONS } from '../../config';
 
-const meta = SECTIONS.patients;
+const meta = SECTIONS.everyone;
 ---
 
 <Base title={`${meta.title} — ${SITE.name}`} description={meta.description}>
-  <SectionIndex section="patients" />
+  <SectionIndex section="everyone" />
 </Base>

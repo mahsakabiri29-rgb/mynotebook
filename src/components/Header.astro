@@ -1,11 +1,12 @@
 ---
-// سربرگ سایت: نام مجله + ناوبری اصلی
-import { SITE } from '../config';
+// سربرگ سایت: نام دفترچه + ناوبری اصلی
+import { SITE, SECTIONS } from '../config';
 
 const nav = [
   { href: '/', label: 'خانه' },
-  { href: '/patients', label: 'برای بیماران' },
-  { href: '/professionals', label: 'برای دندان‌پزشکان' },
+  { href: SECTIONS.everyone.href, label: SECTIONS.everyone.title },
+  { href: SECTIONS.professionals.href, label: SECTIONS.professionals.title },
+  { href: '/notebook', label: 'دفترچهٔ یادگیری' },
   { href: '/about', label: 'درباره' },
 ];
 
@@ -71,7 +72,7 @@ const isActive = (href: string) =>
   nav ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem 1.5rem;
+    gap: 0.4rem 1.4rem;
     list-style: none;
     margin: 0;
     padding: 0;

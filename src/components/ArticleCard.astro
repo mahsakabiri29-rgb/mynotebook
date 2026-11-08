@@ -1,26 +1,40 @@
 ---
-// کارت مقاله در فهرست‌ها: برچسب بخش، عنوان، خلاصه، تاریخ و زمان مطالعه
+// کارت یادداشت در فهرست‌ها: نشان بخش/نوع، عنوان، خلاصه، تاریخ و زمان مطالعه
 import type { CollectionEntry } from 'astro:content';
-import { SECTIONS, type SectionKey } from '../config';
+import { SECTIONS, NOTE_KINDS, type SectionKey, type NoteKind } from '../config';
 import { faDate, readingMinutes, toFa } from '../lib/format';
 
 interface Props {
-  post: CollectionEntry<'patients' | 'professionals'>;
+  post: CollectionEntry<'everyone' | 'professionals' | 'failsafe' | 'notebook'>;
   showKicker?: boolean;
 }
 
 const { post, showKicker = true } = Astro.props;
-const section = SECTIONS[post.collection as SectionKey];
+const isNotebook = post.collection === 'notebook';
+
+const href = isNotebook
+  ? `/notebook/${post.id}`
+  : `${SECTIONS[post.collection as SectionKey].href}/${post.id}`;
+
+const kickerLabel = isNotebook
+  ? NOTE_KINDS[post.data.kind as NoteKind]
+  : SECTIONS[post.collection as SectionKey].title;
+
 const minutes = readingMinutes(post.body ?? '');
-const href = `${section.href}/${post.id}`;
 ---
 
 <article class="entry">
-  {showKicker && <p class="kicker">{section.title}</p>}
+  {
+    showKicker && (
+      <p class="kicker">
+        {isNotebook ? <span class="kind-badge">{kickerLabel}</span> : kickerLabel}
+      </p>
+    )
+  }
   <h3 class="title">
     <a href={href}>{post.data.title}</a>
   </h3>
-  <p class="dek">{post.data.description}</p>
+  {post.data.description && <p class="dek">{post.data.description}</p>}
   <p class="meta">
     <time datetime={post.data.pubDate.toISOString()}>
       {faDate(post.data.pubDate)}

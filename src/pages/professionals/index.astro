@@ -1,12 +1,74 @@
 ---
-// فهرست مقاله‌های بخش «برای دندان‌پزشکان»
+// فهرست یادداشت‌های بخش «برای دندان‌پزشکان» + معرفی پروژهٔ Failsafe
 import Base from '../../layouts/Base.astro';
 import SectionIndex from '../../components/SectionIndex.astro';
 import { SITE, SECTIONS } from '../../config';
 
 const meta = SECTIONS.professionals;
+const failsafe = SECTIONS.failsafe;
 ---
 
 <Base title={`${meta.title} — ${SITE.name}`} description={meta.description}>
-  <SectionIndex section="professionals" />
+  <SectionIndex section="professionals">
+    <a class="project" slot="lead" href={failsafe.href}>
+      <p class="project-kicker">{failsafe.kicker}</p>
+      <h2>پروژهٔ پژوهشی Failsafe</h2>
+      <p>
+        برنامه‌ریزی برای شکست درمان و درمان‌های ترمیم‌پذیر — مقاله‌به‌مقاله،
+        با جدا شدن شواهد از برداشت شخصی.
+      </p>
+      <span class="project-more">ورود به پروژه ←</span>
+    </a>
+  </SectionIndex>
 </Base>
+
+<style>
+  .project {
+    display: block;
+    margin-block-start: 2.25rem;
+    background: var(--accent-wash);
+    border: 1px solid #c7d6ee;
+    border-radius: var(--radius);
+    padding: 1.5rem 1.7rem;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .project:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .project-kicker {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-block: 0 0.3rem;
+  }
+
+  .project h2 {
+    font-size: 1.2rem;
+    margin-block-end: 0.4rem;
+  }
+
+  .project p {
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+    line-height: 1.9;
+  }
+
+  .project-more {
+    display: inline-block;
+    margin-block-start: 0.8rem;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .project:hover .project-more {
+    color: var(--accent-deep);
+  }
+</style>

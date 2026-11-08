@@ -2,34 +2,61 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 // ─────────────────────────────────────────────────────────────
-//  ساختار هر مقاله. فیلدهای هر فایل .md باید این شکل باشد:
+//  ساختار هر یادداشت/مقاله. فیلدهای هر فایل .md این شکل است:
 //
 //  ---
-//  title: عنوان مقاله
-//  description: خلاصهٔ یک‌خطی که در فهرست‌ها نمایش داده می‌شود
-//  pubDate: 2026-11-06
-//  tags: [دندان‌پزشکی، پیشگیری]   ← اختیاری
-//  draft: false                  ← اختیاری؛ اگر true باشد منتشر نمی‌شود
+//  title: عنوان
+//  description: خلاصهٔ یک‌خطی
+//  pubDate: 2026-11-07
+//  kind: reading-note        ← اختیاری؛ یکی از NOTE_KINDS
+//  updated: 2026-11-10       ← اختیاری؛ تاریخ آخرین بازنگری
+//  changelog:                ← اختیاری؛ سابقهٔ تغییرات فکری
+//    - date: 2026-11-10
+//      note: چه چیزی عوض شد و چرا
+//  references:               ← اختیاری؛ فهرست منابع
+//    - Opdam NJ, et al. J Dent Res. 2014;93:943-949.
+//  paper: (نقل کامل مقالهٔ مرجع، برای یادداشت‌های مطالعه) ← اختیاری
+//  tags: [Failsafe]          ← اختیاری
+//  draft: false              ← اختیاری؛ اگر true باشد منتشر نمی‌شود
 //  ---
 // ─────────────────────────────────────────────────────────────
 
-const articleSchema = z.object({
+const entrySchema = z.object({
   title: z.string(),
-  description: z.string(),
+  description: z.string().default(''),
   pubDate: z.coerce.date(),
+  updated: z.coerce.date().optional(),
+  kind: z
+    .enum(['reading-note', 'question', 'lesson', 'reflection', 'idea', 'article'])
+    .default('article'),
+  paper: z.string().optional(),
+  references: z.array(z.string()).default([]),
+  changelog: z
+    .array(z.object({ date: z.coerce.date(), note: z.string() }))
+    .default([]),
   tags: z.array(z.string()).default([]),
   draft: z.boolean().default(false),
 });
 
 export const collections = {
-  // مقالات بخش «برای بیماران» → src/content/patients/
-  patients: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/patients' }),
-    schema: articleSchema,
+  // «برای همه» → src/content/everyone/
+  everyone: defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/everyone' }),
+    schema: entrySchema,
   }),
-  // مقالات بخش «برای دندان‌پزشکان» → src/content/professionals/
+  // «برای دندان‌پزشکان» → src/content/professionals/
   professionals: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/professionals' }),
-    schema: articleSchema,
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/professionals' }),
+    schema: entrySchema,
+  }),
+  // پروژهٔ Failsafe → src/content/failsafe/
+  failsafe: defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/failsafe' }),
+    schema: entrySchema,
+  }),
+  // «دفترچهٔ یادگیری» → src/content/notebook/
+  notebook: defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notebook' }),
+    schema: entrySchema,
   }),
 };

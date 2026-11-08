@@ -1,11 +1,11 @@
 ---
-// صفحهٔ فهرست هر بخش: سرصفحهٔ بخش + فهرست مقاله‌ها
+// صفحهٔ فهرست هر بخش: سرصفحهٔ بخش + فهرست یادداشت‌ها
 import { getCollection } from 'astro:content';
 import ArticleCard from './ArticleCard.astro';
-import { SECTIONS, type SectionKey } from '../config';
+import { SECTIONS } from '../config';
 
 interface Props {
-  section: SectionKey;
+  section: 'everyone' | 'professionals';
 }
 
 const { section } = Astro.props;
@@ -21,6 +21,8 @@ const posts = (await getCollection(section, (p) => !p.data.draft)).sort(
     <h1>{meta.title}</h1>
     <p class="intro">{meta.intro}</p>
   </header>
+
+  <slot name="lead" />
 
   <div class="list">
     {posts.map((post) => <ArticleCard post={post} showKicker={false} />)}

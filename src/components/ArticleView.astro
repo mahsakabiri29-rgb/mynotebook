@@ -1,34 +1,63 @@
 ---
-// نمایش یک مقاله: سرصفحه (عنوان، خلاصه، تاریخ، زمان مطالعه) + متن + برچسب‌ها + بازگشت
+// نمایش یک یادداشت/مقاله: سرصفحه + متن + نشان نوع + مقالهٔ مرجع + منابع + سابقهٔ تغییرات
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { SECTIONS, SITE, type SectionKey } from '../config';
+import { SECTIONS, NOTE_KINDS, type SectionKey, type NoteKind } from '../config';
 import { faDate, readingMinutes, toFa } from '../lib/format';
 
 interface Props {
-  post: CollectionEntry<'patients' | 'professionals'>;
+  post: CollectionEntry<'everyone' | 'professionals' | 'failsafe' | 'notebook'>;
 }
 
 const { post } = Astro.props;
-const section = SECTIONS[post.collection as SectionKey];
+const isNotebook = post.collection === 'notebook';
+const section = isNotebook ? null : SECTIONS[post.collection as SectionKey];
+const kindLabel = NOTE_KINDS[post.data.kind as NoteKind];
 const { Content } = await render(post);
 const minutes = readingMinutes(post.body ?? '');
+const backHref = isNotebook ? '/notebook' : section!.href;
+const backLabel = isNotebook ? 'دفترچهٔ یادگیری' : section!.title;
 ---
 
-<Base title={`${post.data.title} — ${SITE.name}`} description={post.data.description}>
+<Base title={`${post.data.title} — `} description={post.data.description}>
   <article class="article container">
     <header class="head">
-      <p class="kicker">{section.title}</p>
+      <p class="kicker">
+        {isNotebook ? <span class="kind-badge">{kindLabel}</span> : section!.title}
+        {post.data.kind !== 'article' && !isNotebook && (
+          <span class="kind-badge spaced">{kindLabel}</span>
+        )}
+      </p>
       <h1>{post.data.title}</h1>
-      <p class="dek">{post.data.description}</p>
+      {post.data.description && <p class="dek">{post.data.description}</p>}
       <p class="meta">
         <time datetime={post.data.pubDate.toISOString()}>
           {faDate(post.data.pubDate)}
         </time>
         <span aria-hidden="true">·</span>
         <span>{toFa(minutes)} دقیقه مطالعه</span>
+        {
+          post.data.updated && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>
+                به‌روزشده:{' '}
+                <time datetime={post.data.updated.toISOString()}>
+                  {faDate(post.data.updated)}
+                </time>
+              </span>
+            </>
+          )
+        }
       </p>
+      {
+        post.data.paper && (
+          <p class="paper" dir="ltr">
+            <strong>Source paper:</strong> {post.data.paper}
+          </p>
+        )
+      }
     </header>
 
     <div class="prose">
@@ -36,17 +65,35 @@ const minutes = readingMinutes(post.body ?? '');
     </div>
 
     {
-      post.data.tags.length > 0 && (
-        <ul class="tags" aria-label="برچسب‌ها">
-          {post.data.tags.map((tag) => (
-            <li>{tag}</li>
-          ))}
-        </ul>
+      post.data.references.length > 0 && (
+        <section class="refs" aria-label="منابع">
+          <h2>منابع</h2>
+          <ol>
+            {post.data.references.map((ref) => (
+              <li dir="ltr">{ref}</li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    {
+      post.data.changelog.length > 0 && (
+        <section class="changelog" aria-label="سابقهٔ تغییرات">
+          <h2>سابقهٔ این یادداشت</h2>
+          <ul>
+            {post.data.changelog.map((c) => (
+              <li>
+                <time datetime={c.date.toISOString()}>{faDate(c.date)}</time> — {c.note}
+              </li>
+            ))}
+          </ul>
+        </section>
       )
     }
 
     <p class="back">
-      <a href={section.href}>بازگشت به {section.title}</a>
+      <a href={backHref}>بازگشت به {backLabel}</a>
     </p>
   </article>
 </Base>
@@ -78,21 +125,45 @@ const minutes = readingMinutes(post.body ?? '');
     margin-block-end: 2.5rem;
   }
 
-  .tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0;
-    margin-block: 3rem 0 0;
+  .kind-badge.spaced {
+    margin-inline-start: 0.6rem;
   }
 
-  .tags li {
-    font-size: 0.8rem;
+  .paper {
+    font-size: 0.85rem;
     color: var(--ink-soft);
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    padding: 0.15em 0.85em;
+    background: var(--wash);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    margin-block-start: 1.4rem;
+    text-align: left;
+    line-height: 1.8;
+  }
+
+  .refs h2,
+  .changelog h2 {
+    font-size: 1.05rem;
+    margin-block: 2.5rem 0.7rem;
+  }
+
+  .refs ol {
+    padding-inline-start: 1.6em;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.9;
+    text-align: left;
+  }
+
+  .changelog ul {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .changelog li + li {
+    margin-block-start: 0.5em;
   }
 
   .back {

@@ -1,45 +1,75 @@
 ---
-// صفحهٔ «درباره» — زندگی‌نامهٔ شما
-// متن این صفحه نمونه است؛ آن را با اطلاعات واقعی خودتان جایگزین کنید.
+// صفحهٔ «درباره»: پروفایل نویسنده + فلسفهٔ دفترچه + راه‌های ارتباط
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
+
+const { author } = SITE;
 ---
 
-<Base title={`درباره — ${SITE.name}`} description="دربارهٔ نویسندهٔ این مجله و انگیزهٔ ساخت آن">
+<Base title={`درباره — ${SITE.name}`} description="دربارهٔ نویسندهٔ این دفترچه و فلسفهٔ آن">
   <section class="page container">
     <header class="head">
-      <p class="kicker">پشت‌صحنهٔ مجله</p>
+      <p class="kicker">پشت‌صحنهٔ دفترچه</p>
       <h1>درباره</h1>
     </header>
 
-    <div class="prose narrow">
-      <!-- ✏️ از اینجا به بعد، متن را با اطلاعات خودتان عوض کنید -->
+    <section class="profile" aria-label="پروفایل">
+      <h2 class="name">{author.name}</h2>
+      <p class="title">{author.title}</p>
+      <p class="interest">{author.interest}</p>
+
+      <dl class="details">
+        <div>
+          <dt>اینستاگرام</dt>
+          <dd>
+            <a href={author.instagramUrl} rel="me noopener" target="_blank" dir="ltr">
+              @{author.instagram}
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt>تلفن مطب</dt>
+          <dd><a href={author.phoneHref} dir="ltr">{author.phoneDisplay}</a></dd>
+        </div>
+        <div>
+          <dt>نشانی مطب</dt>
+          <dd>{author.address}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="philosophy prose narrow" aria-label="فلسفهٔ این دفترچه">
+      <h2>این دفترچه برای چیست؟</h2>
       <p>
-        سلام! من «نام شما» هستم؛ دندان‌پزشک و نویسندهٔ این مجلهٔ کوچک.
-        سال‌هاست هر روز میان دو دنیا رفت‌وآمد می‌کنم: دنیای مطب، که در آن با
-        ترس‌ها و پرسش‌های بیماران روبه‌رو هستم، و دنیای مقاله‌ها و مجله‌های
-        علمی، که در آن شواهد تازه‌ای برای پاسخ‌دادن به همان پرسش‌ها پیدا می‌شود.
+        این سایت ابزار تبلیغات نیست؛ موتور یادگیری من است. می‌خواهم با ثبت
+        منظم، منسجم درس بخوانم، انتقادی‌تر فکر کنم و از چیزی که یاد می‌گیرم
+        بپرسم — و رشد حرفه‌ای‌ام را مستند کنم.
       </p>
-      <p>
-        این مجله تلاشی برای پل‌زدن روی فاصلهٔ این دو دنیاست: در بخش
-        <a href="/patients">«برای بیماران»</a> می‌کوشم دانش دندان‌پزشکی را به
-        زبان ساده و قابل‌اعتماد بنویسم، و در بخش
-        <a href="/professionals">«برای دندان‌پزشکان»</a>
-        یادداشت‌هایی از مطالعهٔ ادبیات پژوهشی و تجربه‌های بالینی خودم نگه می‌دارم.
-      </p>
+      <p>آنچه اینجا منتشر و نگه‌داری می‌شود:</p>
+      <ul>
+        <li>مقاله‌های علمی که می‌خوانم و یادداشت‌هایم دربارهٔ آن‌ها</li>
+        <li>آنچه از دوره‌ها، کتاب‌ها، کیس‌های بالینی و تجربه‌ها می‌آموزم</li>
+        <li>پرسش‌ها، تردیدها و فرضیه‌هایم</li>
+        <li>اشتباه‌ها، سوءبرداشت‌ها و درس‌هایی که از آن‌ها می‌گیرم</li>
+        <li>تغییر نظرات و رویکرد درمانی‌ام در طول زمان</li>
+        <li>تأمل‌های انتقادی و پیوند میان مطالعه‌های مختلف</li>
+      </ul>
+      <p>چند قول مهم:</p>
+      <ul>
+        <li>هر نوشته، نتیجهٔ علمی قطعی نیست؛ اجازهٔ نیمه‌کاره‌ماندن و پرسیدن دارم.</li>
+        <li>شواهد منتشرشده، برداشت شخصی، تجربهٔ بالینی و فرضیهٔ بررسی‌نشده همیشه از هم جدا می‌شوند.</li>
+        <li>اگر شواهد تازه چیزی را عوض کند، متن را به‌روز می‌کنم و تغییرات فکری‌ام را ثبت می‌کنم.</li>
+        <li>اشتباه‌ها و تردیدهایم هرگز به‌شکل واقعیت اثبات‌شده ارائه نمی‌شوند.</li>
+        <li>نوشتهٔ براق از یادگیری صادقانه کم‌اهمیت‌تر است.</li>
+      </ul>
       <blockquote>
         <p>
-          اگر این متن را می‌خوانید، یعنی هنوز صفحهٔ «درباره» را ویرایش نکرده‌ام!
-          این پاراگراف نمونه است؛ آن را با چند خط دربارهٔ خودتان، تحصیلات‌تان و
-          رویکرد حرفه‌ای‌تان جایگزین کنید.
+          این دفترچه باید شبیه یک دفترچهٔ علمی شخصی باشد که کم‌کم به یک
+          آرشیو ارزشمند دانش تبدیل می‌شود — و Failsafe اولین پروژهٔ بزرگ
+          آن است، نه تنها هدف آن.
         </p>
       </blockquote>
-      <h2>راه ارتباطی</h2>
-      <p>
-        برای گفت‌وگو دربارهٔ مقاله‌ها، از راه [نشانی ایمیل یا شبکهٔ اجتماعی شما]
-        با من در ارتباط باشید.
-      </p>
-    </div>
+    </section>
   </section>
 </Base>
 
@@ -52,10 +82,98 @@ import { SITE } from '../config';
   .head h1 {
     font-size: clamp(2rem, 1.5rem + 2.4vw, 2.9rem);
     font-weight: 800;
-    margin-block-end: 1.5rem;
+    margin-block-end: 1.75rem;
+  }
+
+  /* ── پروفایل ── */
+  .profile {
+    max-inline-size: 38rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem 1.9rem;
+    background: var(--wash);
+  }
+
+  .name {
+    font-size: 1.45rem;
+    font-weight: 800;
+  }
+
+  .title {
+    color: var(--accent);
+    font-weight: 600;
+    margin-block-start: 0.3rem;
+  }
+
+  .interest {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin-block: 0.2rem 1.2rem;
+  }
+
+  .details {
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .details > div {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .details dt {
+    flex: none;
+    inline-size: 6.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .details dd {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  /* ── فلسفه ── */
+  .philosophy {
+    margin-block-start: 3rem;
   }
 
   .narrow {
     max-inline-size: var(--prose);
+  }
+
+  .philosophy h2 {
+    font-size: 1.35rem;
+    margin-block: 1.6em 0.6em;
+  }
+
+  .philosophy h2 + p,
+  .philosophy h2 + ul {
+    margin-block-start: 0;
+  }
+
+  .philosophy p + p,
+  .philosophy p + ul,
+  .philosophy ul + p {
+    margin-block-start: 1.05em;
+  }
+
+  .philosophy ul {
+    padding-inline-start: 1.6em;
+  }
+
+  .philosophy li + li {
+    margin-block-start: 0.45em;
+  }
+
+  .philosophy blockquote {
+    margin-block: 1.6em;
+    padding: 0.9em 1.3em;
+    border-inline-start: 3px solid var(--accent);
+    background: var(--accent-wash);
+    border-radius: 0 var(--radius) var(--radius) 0;
   }
 </style>
