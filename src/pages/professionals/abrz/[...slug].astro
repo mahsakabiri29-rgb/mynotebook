@@ -1,0 +1,17 @@
+---
+// صفحهٔ هر یادداشت پروژهٔ ABRZ
+import { getCollection } from 'astro:content';
+import ArticleView from '../../../components/ArticleView.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('abrz', (p) => !p.data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<ArticleView post={post} />

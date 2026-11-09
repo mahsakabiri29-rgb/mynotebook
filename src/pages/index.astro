@@ -11,6 +11,7 @@ const all = (
     getCollection('everyone', (p) => !p.data.draft),
     getCollection('professionals', (p) => !p.data.draft),
     getCollection('failsafe', (p) => !p.data.draft),
+    getCollection('abrz', (p) => !p.data.draft),
     getCollection('notebook', (p) => !p.data.draft),
   ])
 ).flat();

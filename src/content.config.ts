@@ -54,6 +54,11 @@ export const collections = {
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/failsafe' }),
     schema: entrySchema,
   }),
+  // پروژهٔ ABRZ → src/content/abrz/
+  abrz: defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/abrz' }),
+    schema: entrySchema,
+  }),
   // «دفترچهٔ یادگیری» → src/content/notebook/
   notebook: defineCollection({
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notebook' }),

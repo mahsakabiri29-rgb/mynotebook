@@ -5,7 +5,7 @@ import { SECTIONS, NOTE_KINDS, type SectionKey, type NoteKind } from '../config'
 import { faDate, readingMinutes, toFa } from '../lib/format';
 
 interface Props {
-  post: CollectionEntry<'everyone' | 'professionals' | 'failsafe' | 'notebook'>;
+  post: CollectionEntry<'everyone' | 'professionals' | 'failsafe' | 'abrz' | 'notebook'>;
   showKicker?: boolean;
 }
 
@@ -15,6 +15,7 @@ const isNotebook = post.collection === 'notebook';
 const href = isNotebook
   ? `/notebook/${post.id}`
   : `${SECTIONS[post.collection as SectionKey].href}/${post.id}`;
+
 
 const kickerLabel = isNotebook
   ? NOTE_KINDS[post.data.kind as NoteKind]
