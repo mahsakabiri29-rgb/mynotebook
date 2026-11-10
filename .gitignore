@@ -12,3 +12,6 @@ dist/
 Thumbs.db
 *.log
 .zcode/ 
+
+# وضعیت ابزار امنیتی
+.mimosa/
