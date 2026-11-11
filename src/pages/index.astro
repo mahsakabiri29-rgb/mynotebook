@@ -45,6 +45,7 @@ const hrefOf = (p: AnyPost) =>
 
 const gates = [
   {
+    id: 'everyone',
     href: SECTIONS.everyone.href,
     title: SECTIONS.everyone.title,
     color: 'var(--sec-everyone)',
@@ -52,6 +53,7 @@ const gates = [
     text: 'اطلاعات علمی و قابل‌فهم دربارهٔ سلامت دهان و دندان — برای عموم مردم.',
   },
   {
+    id: 'professionals',
     href: SECTIONS.professionals.href,
     title: SECTIONS.professionals.title,
     color: 'var(--sec-professionals)',
@@ -59,6 +61,7 @@ const gates = [
     text: 'مقالات علمی، مرور literature و یادداشت‌های بالینی — با دو پروژهٔ پژوهشی در حال رشد.',
   },
   {
+    id: 'notebook',
     href: '/notebook',
     title: 'دفترچهٔ یادگیری',
     color: 'var(--sec-notebook)',
@@ -81,9 +84,9 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
   </div>
 
   <section class="container hero">
-    <p class="kicker">دفترچهٔ شخصی یادگیری</p>
-    <h1 class="title">{SITE.name}</h1>
-    <p class="lede">
+    <p class="kicker reveal">دفترچهٔ شخصی یادگیری</p>
+    <h1 class="title reveal" style="--d:.06s">{SITE.name}</h1>
+    <p class="lede reveal" style="--d:.12s">
       این‌جا دفترچهٔ یادگیری من است: مقاله‌هایی که می‌خوانم، پرسش‌های بازم،
       اشتباه‌ها و درس‌هایم — با جداشدنِ صریحِ «شواهد علمی» از «برداشت شخصی».
       این دفترچه اول برای رشد من است؛ نه تبلیغ و نه نمایش تخصص.
@@ -93,7 +96,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
   {
     featured && (
       <section class="container front" aria-label="یادداشت برجسته و تیترها">
-        <article class="featured" style={`--sec:${secColor[featured.collection]}`}>
+        <article class="featured reveal" style={`--sec:${secColor[featured.collection]};--d:.15s`}>
           <p class="kicker" style={`color:${secColor[featured.collection]}`}>
             {sectionLabel(featured)}
           </p>
@@ -113,7 +116,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
           </p>
         </article>
 
-        <aside class="glance" aria-label="در یک نگاه">
+        <aside class="glance reveal" aria-label="در یک نگاه" style="--d:.25s">
           <h2>در یک نگاه</h2>
           <ul>
             {
@@ -136,8 +139,110 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
 
   <section class="container gates" aria-label="بخش‌های سایت">
     {
-      gates.map((g) => (
-        <a class="gate" href={g.href} style={`--sec:${g.color}`}>
+      gates.map((g, i) => (
+        <a class="gate reveal" href={g.href} style={`--sec:${g.color};--d:${0.1 + i * 0.12}s`}>
+          {g.id === 'everyone' && (
+            <svg class="scene" viewBox="0 0 240 110" aria-hidden="true">
+              <circle cx="120" cy="55" r="44" fill="var(--sec)" opacity="0.08" />
+              <g class="float">
+                <path
+                  d="M108 36c-7 0-11.6 3.8-11.6 10.1 0 5 1.7 8.4 3 13.5 1.3 5 2.1 13.4 4.6 16.8 0.9 1.4 2.9 1.4 3.6-0.2l1.5-5.7c0.7-1.7 2.8-1.7 3.4 0l1.5 5.7c0.7 1.6 2.7 1.6 3.6 0.2 2.5-3.4 3.3-11.8 4.6-16.8 1.3-5.1 3-8.5 3-13.5 0-6.3-4.6-10.1-11.6-10.1-2.9 0-3.9 0.9-5 0.9s-2.2-0.9-5-0.9z"
+                  fill="none"
+                  stroke="var(--sec)"
+                  stroke-width="2.4"
+                />
+              </g>
+              <g class="spark s1" fill="var(--sec)">
+                <path d="M152 28l2.4 5.4 5.4 2.4-5.4 2.4-2.4 5.4-2.4-5.4-5.4-2.4 5.4-2.4z" />
+              </g>
+              <g class="spark s2" fill="var(--sec)">
+                <path d="M84 66l1.9 4.3 4.3 1.9-4.3 1.9-1.9 4.3-1.9-4.3-4.3-1.9 4.3-1.9z" />
+              </g>
+            </svg>
+          )}
+          {g.id === 'professionals' && (
+            <svg class="scene" viewBox="0 0 240 110" aria-hidden="true">
+              <circle cx="120" cy="55" r="44" fill="var(--sec)" opacity="0.08" />
+              <g class="float">
+                <rect
+                  x="94"
+                  y="28"
+                  width="52"
+                  height="50"
+                  rx="15"
+                  fill="none"
+                  stroke="var(--sec)"
+                  stroke-width="2.4"
+                />
+                <rect
+                  class="ring"
+                  x="101"
+                  y="35"
+                  width="38"
+                  height="36"
+                  rx="11"
+                  fill="none"
+                  stroke="var(--sec)"
+                  stroke-width="1.7"
+                  stroke-dasharray="5 4"
+                />
+                <ellipse cx="120" cy="53" rx="9.5" ry="11.5" fill="var(--sec)" opacity="0.35" />
+              </g>
+            </svg>
+          )}
+          {g.id === 'notebook' && (
+            <svg class="scene" viewBox="0 0 240 110" aria-hidden="true">
+              <circle cx="120" cy="55" r="44" fill="var(--sec)" opacity="0.08" />
+              <g class="float">
+                <rect
+                  x="86"
+                  y="26"
+                  width="68"
+                  height="58"
+                  rx="9"
+                  fill="none"
+                  stroke="var(--sec)"
+                  stroke-width="2.4"
+                />
+                <line
+                  x1="98"
+                  y1="44"
+                  x2="140"
+                  y2="44"
+                  stroke="var(--sec)"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  class="ln l1"
+                  style="--len:42"
+                />
+                <line
+                  x1="98"
+                  y1="55"
+                  x2="134"
+                  y2="55"
+                  stroke="var(--sec)"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  class="ln l2"
+                  style="--len:36"
+                />
+                <line
+                  x1="98"
+                  y1="66"
+                  x2="138"
+                  y2="66"
+                  stroke="var(--sec)"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  class="ln l3"
+                  style="--len:40"
+                />
+                <circle class="tip t1" cx="146" cy="44" r="3" fill="var(--sec)" />
+                <circle class="tip t2" cx="140" cy="55" r="3" fill="var(--sec)" />
+                <circle class="tip t3" cx="144" cy="66" r="3" fill="var(--sec)" />
+              </g>
+            </svg>
+          )}
           <p class="g-kicker">{g.title}</p>
           <p class="g-count">{toFa(g.count)} یادداشت</p>
           <p class="g-text">{g.text}</p>
@@ -147,7 +252,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     }
   </section>
 
-  <section class="container projects" aria-label="پروژه‌های پژوهشی">
+  <section class="container projects reveal" aria-label="پروژه‌های پژوهشی" style="--d:.2s">
     <span class="p-label">پروژه‌های پژوهشی:</span>
     <a href={SECTIONS.failsafe.href}>Failsafe</a>
     <span aria-hidden="true">·</span>
@@ -157,10 +262,16 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
 </Base>
 
 <style>
-  /* ── نوار تاریخ ── */
+  /* ── نوار تاریخ — با ته‌رنگ ملایم سه رنگ سایت ── */
   .dateline {
     border-block-end: 1px solid var(--line);
-    background: var(--wash);
+    background: linear-gradient(
+      90deg,
+      #ecf5f4 0%,
+      var(--wash) 30%,
+      #edf2fa 65%,
+      #f2eef6 100%
+    );
   }
 
   .dateline .inner {
@@ -193,6 +304,17 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     font-weight: 800;
     margin-block: 0.35rem 1.1rem;
     letter-spacing: -0.01em;
+    background: linear-gradient(
+      100deg,
+      var(--accent) 0%,
+      var(--sec-everyone) 42%,
+      var(--sec-notebook) 88%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 9s ease-in-out infinite;
   }
 
   .lede {
@@ -239,7 +361,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
   }
 
   .f-title a:hover {
-    color: var(--accent);
+    color: var(--sec, var(--accent));
   }
 
   .f-dek {
@@ -348,8 +470,17 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
   }
 
   .gate:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px -20px rgba(28, 33, 43, 0.4);
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--sec) 55%, var(--line));
+    box-shadow: 0 14px 36px -18px color-mix(in srgb, var(--sec) 50%, transparent);
+  }
+
+  .gate .more {
+    transition: transform 0.2s ease;
+  }
+
+  .gate:hover .more {
+    transform: translateX(-4px);
   }
 
   .g-kicker {
