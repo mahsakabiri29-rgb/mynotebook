@@ -15,9 +15,9 @@ export const SITE = {
     instagram: 'dr.mahsakabiri.s',
     instagramUrl: 'https://instagram.com/dr.mahsakabiri.s',
     phone: '09379412904',
-    phoneDisplay: '۰۹۳۷ ۹۴۱ ۱۲۹۰۴',
+    phoneDisplay: '۰۹۳۷ ۹۴۱ ۲۹۰۴',
     phoneHref: 'tel:+989379412904',
-    address: 'شهرکرد، سعدی شرقی، چهارراه فصیحی، ساختمان لارا، طبقه دوم',
+    address: 'شهرکرد، چهارراه فصیحی، سعدی شرقی، ساختمان لارا، طبقه دوم',
   },
 };
 
