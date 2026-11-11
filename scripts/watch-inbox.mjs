@@ -36,6 +36,22 @@ const MAP = {
   notebook: 'src/content/notebook',
 };
 
+// پوشه‌های مواد پژوهشی خود کاربر — کپی می‌شوند نه منتقل؛ فقط Word/متن، نه PDF خام
+const MATERIALS = [
+  { dir: 'برای دندانپزشکان/projects/ABRZ', section: 'abrz' },
+  { dir: 'برای دندانپزشکان/projects/failsafe', section: 'failsafe' },
+  { dir: 'برای دندانپزشکان', section: 'professionals' },
+  { dir: 'برای همه', section: 'everyone' },
+];
+
+const STATE_FILE = path.join(ROOT, '.materials-state.json');
+let seen = {};
+try {
+  seen = JSON.parse(await readFile(STATE_FILE, 'utf8'));
+} catch {
+  seen = {};
+}
+
 const yaml = (s) => `'${String(s).replaceAll("'", "''")}'`;
 
 function today() {
@@ -66,15 +82,55 @@ function decodeEntities(s) {
     .replaceAll('&apos;', "'");
 }
 
-function docxParagraphs(buf) {
+const cellText = (tc) => decodeEntities(tc.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+
+function docxBlocks(buf) {
   const zip = new AdmZip(buf);
   const entry = zip.getEntry('word/document.xml');
   if (!entry) return [];
-  const xml = zip.readAsText(entry);
-  return xml
-    .split(/<\/w:p>/)
-    .map((p) => decodeEntities(p.replace(/<[^>]+>/g, '')).trim())
-    .filter(Boolean);
+  let xml = zip.readAsText(entry);
+  const blocks = [];
+
+  // جدول‌ها → جدول مارک‌داون
+  xml = xml.replace(/<w:tbl[\s\S]*?<\/w:tbl>/g, (tbl) => {
+    const rows = tbl
+      .split(/<\/w:tr>/)
+      .map((r) => (r.match(/<w:tc[\s\S]*?<\/w:tc>/g) || []).map(cellText))
+      .filter((cells) => cells.some((c) => c.length > 0));
+    if (rows.length > 0) {
+      const md = rows
+        .map((cells, i) => `| ${cells.join(' | ')} |`)
+        .concat(rows.length > 1 ? [`| ${rows[0].map(() => '---').join(' | ')} |`] : []);
+      // خط جداکننده باید بعد از ردیف اول بیاید
+      const [head, ...rest] = rows.map((cells) => `| ${cells.join(' | ')} |`);
+      const sep = `| ${rows[0].map(() => '---').join(' | ')} |`;
+      blocks.push([head, sep, ...rest].join('\n'));
+    }
+    return '\n@@BLOCK@@\n';
+  });
+
+  // پاراگراف‌های متنی (به ترتیب اصلی، با جای‌نگهدار جدول‌ها)
+  const parts = xml.split(/<\/w:p>/).map((p) => {
+    if (p.includes('@@BLOCK@@')) return '@@BLOCK@@';
+    return decodeEntities(p.replace(/<[^>]+>/g, '')).trim();
+  });
+
+  const out = [];
+  let pendingTables = 0;
+  for (const part of parts) {
+    if (part === '@@BLOCK@@') {
+      if (blocks[pendingTables]) out.push(blocks[pendingTables]);
+      pendingTables++;
+    } else if (part) {
+      out.push(part);
+    }
+  }
+  out.push(...blocks.slice(pendingTables));
+  return out.filter(Boolean);
+}
+
+function docxParagraphs(buf) {
+  return docxBlocks(buf);
 }
 
 // صبر می‌کند تا کپی‌شدن فایل کامل شود (اندازه پایدار بماند)
@@ -169,7 +225,73 @@ async function handleFile(dir, name, section) {
 }
 
 let timer = null;
+
+async function* walk(dir) {
+  for (const name of await readdir(dir)) {
+    const full = path.join(dir, name);
+    const s = await stat(full);
+    if (s.isDirectory()) yield* walk(full);
+    else yield { full, s };
+  }
+}
+
+async function processMaterials() {
+  let changed = false;
+  for (const m of MATERIALS) {
+    const dir = path.join(ROOT, m.dir);
+    if (!existsSync(dir)) continue;
+    for await (const { full, s } of walk(dir)) {
+      const rel = path.relative(ROOT, full).replaceAll('\\', '/');
+      const ext = path.extname(full).toLowerCase();
+      const name = path.basename(full);
+      if (name.startsWith('~$') || name.startsWith('.')) continue;
+      if (ext !== '.docx' && ext !== '.txt' && ext !== '.md') continue; // PDF خام را دست نمی‌زنیم
+
+      const prev = seen[rel];
+      const now = { mtime: s.mtimeMs, size: s.size };
+      if (prev && prev.mtime === now.mtime && prev.size === now.size) continue; // بدون تغییر
+
+      try {
+        await waitStable(full);
+        const buf = await readFile(full);
+        const paras = ext === '.docx' ? docxBlocks(buf) : buf.toString('utf8').replace(/^\uFEFF/, '').split(/\r?\n/).filter((l) => l.trim());
+        let title = name.replace(/\.[^.]+$/, '');
+        let bodyLines = paras;
+        if (paras.length > 0) {
+          const first = paras[0];
+          if (first.length <= 120 && !first.startsWith('|')) {
+            title = first;
+            bodyLines = paras.slice(1);
+          }
+        }
+        const dest = path.join(ROOT, MAP[m.section], `${slugFor(name)}.md`);
+        const content =
+          [
+            '---',
+            `title: ${yaml(title)}`,
+            `description: ''`,
+            `pubDate: ${today()}`,
+            `kind: article`,
+            'draft: true',
+            '---',
+            '',
+            `<!-- از پوشهٔ مواد: ${rel} — متن خام؛ قبل از انتشار، خلاصه و دسته‌بندی شود (بلوک‌های :::evidence و :::interpretation) -->`,
+            '',
+          ].join('\n') + bodyLines.join('\n\n') + '\n';
+        await writeFile(dest, content, 'utf8');
+        seen[rel] = now;
+        changed = true;
+        console.log(`✔ (مواد) ${name} → ${path.relative(ROOT, dest)}`);
+      } catch (e) {
+        console.error(`✖ (مواد) ${name}: ${e.message}`);
+      }
+    }
+  }
+  if (changed) await writeFile(STATE_FILE, JSON.stringify(seen, null, 2), 'utf8');
+}
+
 async function processAll() {
+  await processMaterials();
   for (const [folder, destRel] of Object.entries(MAP)) {
     const dir = path.join(INBOX, folder);
     if (!existsSync(dir)) continue;
