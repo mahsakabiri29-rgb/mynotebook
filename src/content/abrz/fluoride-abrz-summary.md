@@ -51,7 +51,19 @@ demineralizing با pH=4.5 به مدت ۹۰ دقیقه، سپس NaOCl ۵٪ به 
 | F90 | 10.8 (2.6) | c |
 | F100 | 15.1 (3.0) | d |
 
-یعنی حدود سه برابر رشد از F0 تا F100؛ اما **تا F20 تفاوت معناداری با چسب
+<!-- نمودار متحرک از داده‌های جدول بالا — نیازی به تغییر نیست -->
+<figure class="chart reveal">
+  <div class="row"><span class="lbl">F0</span><span class="track"><span class="bar" style="--w:33%;--bar:#8a93a3;--bd:0s"></span></span><span class="val">5.3</span></div>
+  <div class="row"><span class="lbl">F10</span><span class="track"><span class="bar" style="--w:32%;--bar:#8a93a3;--bd:.06s"></span></span><span class="val">5.1</span></div>
+  <div class="row"><span class="lbl">F20</span><span class="track"><span class="bar" style="--w:41%;--bar:#8a93a3;--bd:.12s"></span></span><span class="val">6.5</span></div>
+  <div class="row"><span class="lbl">F50</span><span class="track"><span class="bar" style="--w:54%;--bar:#17706e;--bd:.18s"></span></span><span class="val">8.6</span></div>
+  <div class="row"><span class="lbl">F75</span><span class="track"><span class="bar" style="--w:53%;--bar:#17706e;--bd:.24s"></span></span><span class="val">8.5</span></div>
+  <div class="row"><span class="lbl">F90</span><span class="track"><span class="bar" style="--w:68%;--bar:#1b4079;--bd:.3s"></span></span><span class="val">10.8</span></div>
+  <div class="row"><span class="lbl">F100</span><span class="track"><span class="bar" style="--w:94%;--bar:#1b4079;--bd:.36s"></span></span><span class="val">15.1</span></div>
+  <figcaption>مساحت ABRZ (µm²) بر اساس غلظت NaF در adhesive — از جدول ۲ مقالهٔ Kirihara 2013. تا F20 (خاکستری) تفاوت معنادار با F0 نیست؛ از F50 رنگ عوض می‌شود: همان آستانهٔ اثر فلوراید.</figcaption>
+</figure>
+
+یعنی حدود سه برابر رشد از F0 تا F100؛ اما **تا F20 تفاوت معناداری با adhesive
 بدون فلوراید دیده نشد** — اثر آستانه‌ای است.
 
 **مورفولوژی مرز:** در F0 تا F20 تقریباً همهٔ نمونه‌ها نوع a (بدون شیب)؛ در

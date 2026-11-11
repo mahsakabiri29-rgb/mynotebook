@@ -16,7 +16,17 @@ import { SITE } from '../config';
         placeholder="مثلاً: ABRZ، بلیچینگ، restorative cycle…"
         aria-label="عبارت جستجو"
         autocomplete="off"
+        autofocus
       />
+    </div>
+
+    <div class="chips" id="chips" role="group" aria-label="فیلتر بخش">
+      <button data-f="" class="chip on">همه</button>
+      <button data-f="everyone" class="chip">برای همه</button>
+      <button data-f="professionals" class="chip">دندان‌پزشکان</button>
+      <button data-f="failsafe" class="chip">Failuresafe</button>
+      <button data-f="abrz" class="chip">ABRZ</button>
+      <button data-f="notebook" class="chip">دفترچهٔ یادگیری</button>
     </div>
 
     <p class="status" id="status">در حال آماده‌سازی…</p>
@@ -28,6 +38,7 @@ import { SITE } from '../config';
   const input = document.getElementById('q') as HTMLInputElement;
   const status = document.getElementById('status') as HTMLElement;
   const box = document.getElementById('results') as HTMLElement;
+  const chips = document.getElementById('chips') as HTMLElement;
 
   const COLORS: Record<string, string> = {
     everyone: '#17706e',
@@ -41,8 +52,12 @@ import { SITE } from '../config';
   const norm = (s: string) =>
     s.replaceAll('ي', 'ی').replaceAll('ك', 'ک').replaceAll('\u200c', ' ').toLowerCase();
 
+  const esc = (s: string) =>
+    s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+
   type Item = { t: string; d: string; k: string; c: string; u: string; dt: string; b: string };
   let index: Item[] | null = null;
+  let filter = '';
 
   async function load(): Promise<Item[]> {
     if (index) return index;
@@ -65,12 +80,19 @@ import { SITE } from '../config';
     return (s > 0 ? '…' : '') + b.slice(s, m.index + m[0].length + 85) + '…';
   }
 
+  // برجسته‌سازی امن: اول escape، بعد نشانه‌گذاری
+  function mark(text: string, q: string): string {
+    const safe = esc(text);
+    const rx = rxFor(q);
+    return safe.replace(rx, (m) => `<mark>${m}</mark>`);
+  }
+
   const faDate = (iso: string) =>
     new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' }).format(
       new Date(iso)
     );
 
-  function render(items: { it: Item; sn?: string }[], heading: string) {
+  function render(items: { it: Item; sn?: string }[], heading: string, q = '') {
     status.textContent = heading;
     box.innerHTML = '';
     for (const { it, sn } of items) {
@@ -82,16 +104,23 @@ import { SITE } from '../config';
       const dot = document.createElement('span');
       dot.className = 'dot';
       const wrap = document.createElement('div');
+
       const h = document.createElement('h3');
-      h.textContent = it.t;
+      h.innerHTML = q ? mark(it.t, q) : esc(it.t);
+
       const p1 = document.createElement('p');
       p1.className = 'sn';
-      p1.textContent = sn ?? it.d ?? '';
-      if (!p1.textContent) p1.remove();
+      const raw = sn ?? it.d ?? '';
+      if (raw) p1.innerHTML = q ? mark(raw, q) : esc(raw);
+      else p1.remove();
+
       const p2 = document.createElement('p');
       p2.className = 'm';
       p2.textContent = `${it.k} · ${faDate(it.dt)}`;
-      wrap.append(h, p1 ?? document.createComment(''), p2);
+
+      wrap.append(h);
+      if (raw) wrap.append(p1);
+      wrap.append(p2);
       a.append(dot, wrap);
       box.append(a);
     }
@@ -100,20 +129,23 @@ import { SITE } from '../config';
   let timer: ReturnType<typeof setTimeout>;
   async function run() {
     const qRaw = input.value.trim();
+    let items = await load();
+
+    if (filter) items = items.filter((it) => it.c === filter);
+
     if (qRaw.length < 2) {
-      const items = await load();
       const recent = [...items].sort((a, b) => b.dt.localeCompare(a.dt)).slice(0, 5);
       render(recent.map((it) => ({ it })), 'تازه‌ترین یادداشت‌ها — یا بالاتر بنویسید تا جستجو کنیم:');
       return;
     }
-    const items = await load();
+
+    const qn = norm(qRaw);
     const rx = rxFor(qRaw);
     const hits = items
       .map((it) => {
         const t = norm(it.t);
         const d = norm(it.d);
         const b = norm(it.b);
-        const qn = norm(qRaw);
         let s = 0;
         if (t.includes(qn)) s += 6;
         if (d.includes(qn)) s += 3;
@@ -122,23 +154,42 @@ import { SITE } from '../config';
       })
       .filter((x) => x.s > 0)
       .sort((a, b) => b.s - a.s)
-      .slice(0, 25);
+      .slice(0, 30);
 
     if (hits.length === 0) {
       render([], `چیزی برای «${qRaw}» پیدا نشد.`);
     } else {
-      render(hits, `${hits.length} نتیجه برای «${qRaw}»:`);
+      render(hits, `${hits.length} نتیجه برای «${qRaw}»:`, qRaw);
     }
   }
 
   input.addEventListener('input', () => {
     clearTimeout(timer);
-    timer = setTimeout(run, 200);
+    timer = setTimeout(run, 180);
+  });
+
+  chips.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('button.chip') as HTMLElement | null;
+    if (!btn) return;
+    chips.querySelectorAll('.chip').forEach((c) => c.classList.remove('on'));
+    btn.classList.add('on');
+    filter = btn.dataset.f ?? '';
+    run().catch(() => (status.textContent = 'خطا در جستجو.'));
+  });
+
+  // میان‌بر: کلید «/» در هر جای سایت، جستجو را فوکوس می‌کند
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input && !(document.activeElement instanceof HTMLInputElement)) {
+      e.preventDefault();
+      input.focus();
+    }
   });
 
   // پرکردن اولیه از ?q= و اجرا
   const initial = new URLSearchParams(location.search).get('q');
   if (initial) input.value = initial;
+  input.focus();
+  input.select();
   run().catch(() => (status.textContent = 'خطا در بارگذاری ایندکس جستجو.'));
 </script>
 
@@ -173,6 +224,40 @@ import { SITE } from '../config';
     border-color: var(--accent);
     box-shadow: 0 0 0 4px var(--accent-wash);
     background: var(--paper);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-block-start: 0.9rem;
+  }
+
+  .chip {
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.22em 1em;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .chip:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .chip.on {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
   }
 
   .status {

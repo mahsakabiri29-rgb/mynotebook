@@ -16,10 +16,39 @@ changelog:
 درمانی مادام‌العمر نیست.** پس باید طوری درمان کنیم که اگر درمان شکست خورد،
 هنوز بتوانیم دندان را نگه داریم. همین نگاه می‌تواند عمر دندان را طولانی‌تر کند.
 
-این ایده در ادبیات اسم دارد: «چرخهٔ ترمیمی» (restorative cycle) و «ترمیم به‌جای
+این ایده در literature اسم دارد: «چرخهٔ ترمیمی» (restorative cycle) و «ترمیم به‌جای
 تعویض» (repair rather than replace). یک ترمیم معمولاً این چرخه را طی می‌کند:
-شروع با یک ترمیم، بعد درمان ریشه و روکش، بعد ترمیم بزرگ‌تر، بعد شکور و درمان
+شروع با یک ترمیم، بعد درمان ریشه و روکش، بعد ترمیم بزرگ‌تر، بعد شکست و درمان
 ریشهٔ جدید، و در نهایت کشیدن دندان. در هر مرحله، عمر دندان را بیشتر می‌کند.
+
+<!-- تصویر متحرک مفهومی چرخهٔ restorative — نیازی به تغییر نیست -->
+<figure class="anim reveal" aria-label="چرخهٔ restorative">
+  <svg viewBox="0 0 300 190" style="max-width:320px;display:block;margin-inline:auto;overflow:visible">
+    <!-- مدار چرخان -->
+    <g class="orbit">
+      <circle cx="150" cy="95" r="66" fill="none" stroke="#1b4079" stroke-width="1.6" stroke-dasharray="6 7" opacity="0.65"/>
+      <circle cx="150" cy="29" r="4.5" fill="#1b4079"/>
+    </g>
+    <!-- گره‌های چرخه -->
+    <g font-size="10.5" font-weight="700" text-anchor="middle">
+      <rect x="112" y="14" width="76" height="22" rx="11" fill="#eef3fa" stroke="#1b4079" stroke-width="1.4"/>
+      <text x="150" y="28" fill="#1b4079">ترمیم کوچک</text>
+      <rect x="222" y="84" width="76" height="22" rx="11" fill="#eef3fa" stroke="#1b4079" stroke-width="1.4"/>
+      <text x="260" y="98" fill="#1b4079">ترمیم بزرگ‌تر</text>
+      <rect x="112" y="154" width="76" height="22" rx="11" fill="#f6ecec" stroke="#8f3b3b" stroke-width="1.4"/>
+      <text x="150" y="168" fill="#8f3b3b">روکش + اندو</text>
+      <rect x="2" y="84" width="76" height="22" rx="11" fill="#f6ecec" stroke="#8f3b3b" stroke-width="1.4"/>
+      <text x="40" y="98" fill="#8f3b3b">کشیدن دندان</text>
+    </g>
+    <!-- فلش escape: تعمیر به‌جای تعویض -->
+    <g>
+      <path d="M188 22 C 240 -8, 300 30, 288 80" fill="none" stroke="#17706e" stroke-width="2.2" stroke-dasharray="5 5"/>
+      <path d="M282 72 l8 10 l-12 2 z" fill="#17706e"/>
+      <text x="252" y="14" font-size="10.5" font-weight="700" fill="#17706e" text-anchor="middle">تعمیر و حفظ ساختار ↓</text>
+    </g>
+  </svg>
+  <figcaption>چرخهٔ restorative: هر شکستِ با «تعویض کامل» مدیریت شود، مدار به سمت کشیدن می‌چرخد (پیکان سرمه‌ای). راه فرار (سبز): تعمیر و حفظ ساختار دندان — شماتیک مفهومی، نه داده.</figcaption>
+</figure>
 
 ## مقاله‌های کلیدی که تا این‌جا خوانده‌ام
 

@@ -69,6 +69,15 @@ acid-base (محلول demineralizing با pH=4.5 و ۴٫۵ ساعت — سه ب�
 | P–M | ۳۳٫۲۹ (۵٫۲۹) | b | مخلوط |
 | P–P | ۳۵٫۷۹ (۵٫۴۲) | b | **adhesive (۸ از ۱۰)** |
 
+<!-- نمودار متحرک از داده‌های جدول بالا — نیازی به تغییر نیست -->
+<figure class="chart reveal">
+  <div class="row"><span class="lbl">M–M</span><span class="track"><span class="bar" style="--w:100%;--bar:#1b4079;--bd:0s"></span></span><span class="val">۴۳٫۰۸</span></div>
+  <div class="row"><span class="lbl">M–P</span><span class="track"><span class="bar" style="--w:84%;--bar:#8a93a3;--bd:.12s"></span></span><span class="val">۳۶٫۱۲</span></div>
+  <div class="row"><span class="lbl">P–M</span><span class="track"><span class="bar" style="--w:77%;--bar:#8a93a3;--bd:.24s"></span></span><span class="val">۳۳٫۲۹</span></div>
+  <div class="row"><span class="lbl">P–P</span><span class="track"><span class="bar" style="--w:83%;--bar:#8f3b3b;--bd:.36s"></span></span><span class="val">۳۵٫۷۹</span></div>
+  <figcaption>میکروشیر bond strength به مینا (MPa) — از جدول ۲ مقالهٔ Li 2010. فقط M–M (سرمه‌ای) بالاتر از بقیه است؛ P–P (قرمز) همان گروهی است که ABRZ تشکیل نداد.</figcaption>
+</figure>
+
 M–M به‌طور معنادار بالاتر از سه گروه دیگر (p<0.005)؛ آن سه با هم تفاوت
 معنادار نداشتند.
 

@@ -25,5 +25,10 @@ tags:
 
 > این توصیه بر پایهٔ اصول درمانی است، نه یک الزام علمی قطعی.
 
+<figure>
+  <img src="/images/whitening.jpg" alt="آماده‌سازی مواد بلیچینگ دندان در مطب" loading="lazy" />
+  <figcaption>آماده‌سازی مواد بلیچینگ — تصویر: Jameswasswa / Wikimedia Commons، مجوز CC BY-SA 4.0</figcaption>
+</figure>
+
 *این یادداشت برگرفته از یادداشت شخصی نویسنده است و برای عموم خوانندگان
 ساده‌سازی شده.*

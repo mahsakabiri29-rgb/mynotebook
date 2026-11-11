@@ -59,6 +59,20 @@ changelog:
 | شکستگی ساختار دندان | ۱ | بقا |
 | درد ناشی از ترمیم | ۱ | بقا |
 
+<!-- نمودار متحرک از داده‌های جدول بالا — نیازی به تغییر نیست -->
+<figure class="chart reveal">
+  <div class="row"><span class="lbl">درمان اندو</span><span class="track"><span class="bar" style="--w:100%;--bar:#8f3b3b;--bd:0s"></span></span><span class="val">۶</span></div>
+  <div class="row"><span class="lbl">پوسیدگی ثانویه</span><span class="track"><span class="bar" style="--w:100%;--bar:#8f3b3b;--bd:.08s"></span></span><span class="val">۶</span></div>
+  <div class="row"><span class="lbl">کنتاکت ناقص</span><span class="track"><span class="bar" style="--w:83%;--bar:#b3702d;--bd:.16s"></span></span><span class="val">۵</span></div>
+  <div class="row"><span class="lbl">کشیدن</span><span class="track"><span class="bar" style="--w:67%;--bar:#8f3b3b;--bd:.24s"></span></span><span class="val">۴</span></div>
+  <div class="row"><span class="lbl">گم‌شدن ترمیم</span><span class="track"><span class="bar" style="--w:50%;--bar:#1b4079;--bd:.32s"></span></span><span class="val">۳</span></div>
+  <div class="row"><span class="lbl">شکستگی ترمیم</span><span class="track"><span class="bar" style="--w:33%;--bar:#1b4079;--bd:.4s"></span></span><span class="val">۲</span></div>
+  <div class="row"><span class="lbl">عاج در معرض</span><span class="track"><span class="bar" style="--w:33%;--bar:#b3702d;--bd:.48s"></span></span><span class="val">۲</span></div>
+  <div class="row"><span class="lbl">شکستگی دندان</span><span class="track"><span class="bar" style="--w:17%;--bar:#8f3b3b;--bd:.56s"></span></span><span class="val">۱</span></div>
+  <div class="row"><span class="lbl">درد ناشی از ترمیم</span><span class="track"><span class="bar" style="--w:17%;--bar:#1b4079;--bd:.64s"></span></span><span class="val">۱</span></div>
+  <figcaption>سی شکست ثبت‌شده در پیگیری ۱۵ ساله — از داده‌های Hofsteenge 2023. سرمه‌ای = شکست‌های شاخص «بقا»؛ نارنجی = فقط شاخص «موفقیت»؛ قرمز = جدی‌ترین تهدید دندان.</figcaption>
+</figure>
+
 :::
 
 :::interpretation

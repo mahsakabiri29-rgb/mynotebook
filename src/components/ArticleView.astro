@@ -21,6 +21,7 @@ const backLabel = isNotebook ? 'دفترچهٔ یادگیری' : section!.title;
 ---
 
 <Base title={`${post.data.title} — `} description={post.data.description}>
+  <div class="progress" aria-hidden="true"><span id="pbar"></span></div>
   <article class="article container">
     <header class="head">
       <p class="kicker">
@@ -96,6 +97,20 @@ const backLabel = isNotebook ? 'دفترچهٔ یادگیری' : section!.title;
       <a href={backHref}>بازگشت به {backLabel}</a>
     </p>
   </article>
+
+  <script>
+    // نوار پیشرفت مطالعه
+    const bar = document.getElementById("pbar");
+    if (bar) {
+      const upd = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+      };
+      document.addEventListener("scroll", upd, { passive: true });
+      upd();
+    }
+  </script>
 </Base>
 
 <style>

@@ -43,6 +43,38 @@ changelog:
 
 :::
 
+<!-- تصویر متحرک مفهومی — شماتیک است، نه داده؛ نیازی به تغییر نیست -->
+<figure class="anim reveal" aria-label="شماتیک حملهٔ اسیدی و مقاومت ABRZ">
+  <svg viewBox="0 0 340 170" style="max-width:340px;display:block;margin-inline:auto;overflow:visible">
+    <!-- موج‌های اسید سمت راست -->
+    <rect class="wave" x="252" y="34" width="26" height="12" rx="6" fill="#8f3b3b" opacity="0.55"/>
+    <rect class="wave w2" x="262" y="58" width="26" height="12" rx="6" fill="#8f3b3b" opacity="0.4"/>
+    <rect class="wave" x="252" y="82" width="26" height="12" rx="6" fill="#8f3b3b" opacity="0.55"/>
+    <!-- قطره‌های اسید در حال افتادن -->
+    <circle class="drop" cx="242" cy="38" r="2.6" fill="#8f3b3b"/>
+    <circle class="drop d2" cx="248" cy="62" r="2.2" fill="#8f3b3b"/>
+    <circle class="drop d3" cx="244" cy="86" r="2.4" fill="#8f3b3b"/>
+    <!-- کامپوزیت (ترمیم) -->
+    <rect x="150" y="30" width="80" height="90" rx="8" fill="#eef3fa" stroke="#1b4079" stroke-width="2"/>
+    <text x="190" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#1b4079">ترمیم</text>
+    <!-- لایهٔ adhesive -->
+    <rect x="140" y="30" width="10" height="90" fill="#c7d6ee"/>
+    <!-- ABRZ — نوار تپنده زیر adhesive -->
+    <rect class="zone" x="128" y="30" width="12" height="90" rx="3" fill="#17706e"/>
+    <!-- عاج/مینا -->
+    <rect x="60" y="30" width="68" height="90" rx="6" fill="#f7f9fc" stroke="#8a93a3" stroke-width="1.6"/>
+    <path d="M72 46h44M72 66h44M72 86h44M72 106h44" stroke="#e5e8ee" stroke-width="4" stroke-linecap="round"/>
+    <!-- برچسب‌ها -->
+    <text x="134" y="140" text-anchor="middle" font-size="10" font-weight="700" fill="#17706e">ABRZ</text>
+    <text x="145" y="154" text-anchor="middle" font-size="10" fill="#5b6472">adhesive</text>
+    <text x="94" y="22" text-anchor="middle" font-size="10" fill="#5b6472">دندان</text>
+    <text x="265" y="24" text-anchor="middle" font-size="10" fill="#8f3b3b">اسید</text>
+    <!-- سپر مقاومت روی ABRZ -->
+    <path d="M120 96 l14 -12 l-4 12 z" fill="#17706e" opacity="0.7"/>
+  </svg>
+  <figcaption>شماتیک مفهومی: موج‌های اسیدی به سطح تماس می‌رسند، اما نوار ABRZ (تپنده) مانند جبههٔ مقاوم جلوی نفوذ به بافت دندان را می‌گیرد — تصویرسازی ایده، نه داده.</figcaption>
+</figure>
+
 ## مرز دانش — چه می‌دانیم و چه نمی‌دانیم
 
 :::evidence

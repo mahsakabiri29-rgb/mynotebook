@@ -41,6 +41,14 @@ tags:
 | ریسک متوسط (۳۸۵ ترمیم) | ۳٫۵٪ | ۴٫۱٪ |
 | ریسک پایین (۱٬۸۱۵ ترمیم) | ۱٫۲٪ | ۱٫۶٪ |
 
+<!-- نمودار متحرک از داده‌های جدول بالا — نیازی به تغییر نیست -->
+<figure class="chart reveal">
+  <div class="row"><span class="lbl">ریسک بالا</span><span class="track"><span class="bar" style="--w:64%;--bar:#8f3b3b;--bd:0s"></span></span><span class="val">۳٫۲٪ / ۴٫۶٪</span></div>
+  <div class="row"><span class="lbl">ریسک متوسط</span><span class="track"><span class="bar" style="--w:70%;--bar:#b3702d;--bd:.12s"></span></span><span class="val">۳٫۵٪ / ۴٫۱٪</span></div>
+  <div class="row"><span class="lbl">ریسک پایین</span><span class="track"><span class="bar" style="--w:24%;--bar:#17706e;--bd:.24s"></span></span><span class="val">۱٫۲٪ / ۱٫۶٪</span></div>
+  <figcaption>شکست سالانه (AFR) پنج‌ساله/ده‌ساله بر اساس ریسک پوسیدگی بیمار — از داده‌های Opdam 2014. ریسکِ بیمار، رنگ میله را تعیین می‌کند.</figcaption>
+</figure>
+
 **ضرایب خطر (HR) در تحلیل همهٔ مطالعه‌ها:**
 
 | متغیر | پرمولر | مولر |

@@ -12,3 +12,6 @@
   https://commons.wikimedia.org/wiki/File:Dental_flossing_9344.JPG
 
 در هر مقاله، نام منبع و مجوز در زیر تصویر (figcaption) هم آمده است.
+
+- `whitening.jpg` — Jameswasswa، «Preparing Teeth Whitening Materials for Dental Treatment»، Wikimedia Commons، مجوز CC BY-SA 4.0
+  https://commons.wikimedia.org/wiki/File:Preparing_Teeth_Whitening_Materials_for_Dental_Treatment.jpg
