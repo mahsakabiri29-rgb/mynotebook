@@ -1,102 +1,344 @@
 ---
-// صفحهٔ اصلی: فلسفهٔ دفترچه + در ورودی بخش‌ها + تازه‌ترین یادداشت‌ها
+// صفحهٔ اصلی — چیدمان روزنامه‌ای: نوار تاریخ، یادداشت برجسته،
+// ستون «در یک نگاه»، کارت‌های رنگی بخش‌ها و نوار پروژه‌ها
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import ArticleCard from '../components/ArticleCard.astro';
 import { SITE, SECTIONS } from '../config';
+import { faDate, readingMinutes, toFa } from '../lib/format';
 
-// تازه‌ترین‌ها از هر چهار مجموعه، ترکیبی
+type AnyPost = Awaited<ReturnType<typeof getCollection<'notebook'>>>[number];
+
+const colls = ['everyone', 'professionals', 'failsafe', 'abrz', 'notebook'] as const;
 const all = (
-  await Promise.all([
-    getCollection('everyone', (p) => !p.data.draft),
-    getCollection('professionals', (p) => !p.data.draft),
-    getCollection('failsafe', (p) => !p.data.draft),
-    getCollection('abrz', (p) => !p.data.draft),
-    getCollection('notebook', (p) => !p.data.draft),
-  ])
+  await Promise.all(colls.map((c) => getCollection(c, (p) => !p.data.draft)))
 ).flat();
-const latest = all
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+const sorted = all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// یادداشت برجسته: تازه‌ترین محتوای اصلی (نه دفترچه)
+const featured = sorted.find((p) => p.collection !== 'notebook') ?? sorted[0];
+// ستون «در یک نگاه»: چهار تیتر بعدی
+const glance = sorted.filter((p) => p !== featured).slice(0, 4);
+
+const secColor: Record<string, string> = {
+  everyone: 'var(--sec-everyone)',
+  professionals: 'var(--sec-professionals)',
+  failsafe: 'var(--sec-professionals)',
+  abrz: 'var(--sec-professionals)',
+  notebook: 'var(--sec-notebook)',
+};
+
+const sectionLabel = (p: AnyPost) => {
+  if (p.collection === 'notebook') return 'دفترچهٔ یادگیری';
+  if (p.collection === 'failsafe') return 'Failsafe';
+  if (p.collection === 'abrz') return 'ABRZ';
+  return SECTIONS[p.collection as 'everyone' | 'professionals'].title;
+};
+
+const hrefOf = (p: AnyPost) =>
+  p.collection === 'notebook'
+    ? `/notebook/${p.id}`
+    : p.collection === 'failsafe'
+      ? `/professionals/failsafe/${p.id}`
+      : p.collection === 'abrz'
+        ? `/professionals/abrz/${p.id}`
+        : `/${p.collection}/${p.id}`;
+
+const gates = [
+  {
+    href: SECTIONS.everyone.href,
+    title: SECTIONS.everyone.title,
+    color: 'var(--sec-everyone)',
+    count: all.filter((p) => p.collection === 'everyone').length,
+    text: 'اطلاعات علمی و قابل‌فهم دربارهٔ سلامت دهان و دندان — برای عموم مردم.',
+  },
+  {
+    href: SECTIONS.professionals.href,
+    title: SECTIONS.professionals.title,
+    color: 'var(--sec-professionals)',
+    count: all.filter((p) => ['professionals', 'failsafe', 'abrz'].includes(p.collection)).length,
+    text: 'مقالات علمی، مرور literature و یادداشت‌های بالینی — با دو پروژهٔ پژوهشی در حال رشد.',
+  },
+  {
+    href: '/notebook',
+    title: 'دفترچهٔ یادگیری',
+    color: 'var(--sec-notebook)',
+    count: all.filter((p) => p.collection === 'notebook').length,
+    text: 'پرسش‌های باز، اشتباه‌ها و درس‌ها، تأمل‌ها و ایده‌های خام — ثبتشده در حین یادگیری.',
+  },
+];
+
+const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
 ---
 
 <Base title={`${SITE.name} — ${SITE.tagline}`}>
-  <section class="hero container">
+  <!-- نوار تاریخ به سبک روزنامه -->
+  <div class="dateline">
+    <div class="container inner">
+      <span>امروز {faDate(new Date())}</span>
+      <span class="mid">{SITE.tagline}</span>
+      <span>{toFa(all.length)} یادداشت در {toFa(4)} بخش</span>
+    </div>
+  </div>
+
+  <section class="container hero">
     <p class="kicker">دفترچهٔ شخصی یادگیری</p>
     <h1 class="title">{SITE.name}</h1>
     <p class="lede">
-      اینجا دفترچهٔ یادگیری من است: مقاله‌هایی که می‌خوانم، پرسش‌های بازم،
+      این‌جا دفترچهٔ یادگیری من است: مقاله‌هایی که می‌خوانم، پرسش‌های بازم،
       اشتباه‌ها و درس‌هایم — با جداشدنِ صریحِ «شواهد علمی» از «برداشت شخصی».
       این دفترچه اول برای رشد من است؛ نه تبلیغ و نه نمایش تخصص.
     </p>
   </section>
 
+  {
+    featured && (
+      <section class="container front" aria-label="یادداشت برجسته و تیترها">
+        <article class="featured" style={`--sec:${secColor[featured.collection]}`}>
+          <p class="kicker" style={`color:${secColor[featured.collection]}`}>
+            {sectionLabel(featured)}
+          </p>
+          <h2 class="f-title">
+            <a href={hrefOf(featured)}>{featured.data.title}</a>
+          </h2>
+          {featured.data.description && <p class="f-dek">{featured.data.description}</p>}
+          <p class="meta">
+            <time datetime={featured.data.pubDate.toISOString()}>
+              {faDate(featured.data.pubDate)}
+            </time>
+            <span aria-hidden="true">·</span>
+            <span>{toFa(minutes)} دقیقه مطالعه</span>
+            <span class="read">
+              <a href={hrefOf(featured)}>ادامهٔ یادداشت ←</a>
+            </span>
+          </p>
+        </article>
+
+        <aside class="glance" aria-label="در یک نگاه">
+          <h2>در یک نگاه</h2>
+          <ul>
+            {
+              glance.map((p) => (
+                <li style={`--sec:${secColor[p.collection]}`}>
+                  <a href={hrefOf(p)}>
+                    <span class="dot" aria-hidden="true" />
+                    <span class="g-title">{p.data.title}</span>
+                    <span class="g-sec">{sectionLabel(p)}</span>
+                  </a>
+                </li>
+              ))
+            }
+            {glance.length === 0 && <li class="empty">هنوز یادداشتی منتشر نشده است.</li>}
+          </ul>
+        </aside>
+      </section>
+    )
+  }
+
   <section class="container gates" aria-label="بخش‌های سایت">
-    <a class="gate" href={SECTIONS.everyone.href}>
-      <h2>{SECTIONS.everyone.title}</h2>
-      <p>{SECTIONS.everyone.intro}</p>
-      <span class="more">مشاهدهٔ یادداشت‌ها ←</span>
-    </a>
-    <a class="gate" href={SECTIONS.professionals.href}>
-      <h2>{SECTIONS.professionals.title}</h2>
-      <p>
-        مقالات علمی، مرور ادبیات و یادداشت‌های بالینی — از جمله پروژهٔ پژوهشی
-        Failsafe دربارهٔ برنامه‌ریزی برای شکست درمان.
-      </p>
-      <span class="more">مشاهدهٔ یادداشت‌ها ←</span>
-    </a>
-    <a class="gate" href="/notebook">
-      <h2>دفترچهٔ یادگیری</h2>
-      <p>
-        یادداشت‌های کوتاه: پرسش‌های باز، اشتباه‌ها و درس‌ها، تأمل‌ها و ایده‌های
-        خام — ثبتشده در حین یادگیری.
-      </p>
-      <span class="more">مشاهدهٔ دفترچه ←</span>
-    </a>
+    {
+      gates.map((g) => (
+        <a class="gate" href={g.href} style={`--sec:${g.color}`}>
+          <p class="g-kicker">{g.title}</p>
+          <p class="g-count">{toFa(g.count)} یادداشت</p>
+          <p class="g-text">{g.text}</p>
+          <span class="more">مشاهدهٔ بخش ←</span>
+        </a>
+      ))
+    }
   </section>
 
-  <section class="container latest" aria-label="تازه‌ترین یادداشت‌ها">
-    <h2>تازه‌ترین یادداشت‌ها</h2>
-    <div class="list">
-      {latest.map((post) => <ArticleCard post={post} />)}
-      {latest.length === 0 && <p class="empty">هنوز یادداشتی منتشر نشده است.</p>}
-    </div>
+  <section class="container projects" aria-label="پروژه‌های پژوهشی">
+    <span class="p-label">پروژه‌های پژوهشی:</span>
+    <a href={SECTIONS.failsafe.href}>Failsafe</a>
+    <span aria-hidden="true">·</span>
+    <a href={SECTIONS.abrz.href}>ABRZ</a>
+    <span class="p-hint">— مطالعهٔ مقاله‌به‌مقاله، با جدا شدن شواهد از برداشت شخصی</span>
   </section>
 </Base>
 
 <style>
+  /* ── نوار تاریخ ── */
+  .dateline {
+    border-block-end: 1px solid var(--line);
+    background: var(--wash);
+  }
+
+  .dateline .inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.3rem 1.5rem;
+    padding-block: 0.45rem;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  .dateline .mid {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .dateline .mid {
+      display: inline;
+    }
+  }
+
   /* ── معرفی ── */
   .hero {
-    padding-block: clamp(4rem, 12vh, 6.5rem) 3.25rem;
+    padding-block: clamp(2.5rem, 8vh, 4.5rem) 2.25rem;
   }
 
   .title {
-    font-size: clamp(2.3rem, 1.7rem + 3vw, 3.5rem);
+    font-size: clamp(2.4rem, 1.7rem + 3.2vw, 3.6rem);
     font-weight: 800;
-    margin-block: 0.4rem 1.25rem;
+    margin-block: 0.35rem 1.1rem;
+    letter-spacing: -0.01em;
   }
 
   .lede {
-    font-size: 1.15rem;
+    font-size: 1.13rem;
     color: var(--ink-soft);
-    max-inline-size: 36rem;
+    max-inline-size: 38rem;
     line-height: 2.05;
   }
 
-  /* ── در ورودی بخش‌ها ── */
+  /* ── برجسته + در یک نگاه ── */
+  .front {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-block-end: 3rem;
+    align-items: start;
+  }
+
+  @media (min-width: 60rem) {
+    .front {
+      grid-template-columns: 2fr 1fr;
+      gap: 3.5rem;
+    }
+  }
+
+  .featured {
+    background: var(--raised);
+    border: 1px solid var(--line);
+    border-block-start: 3px solid var(--sec, var(--accent));
+    border-radius: var(--radius);
+    padding: 1.9rem 2rem 1.6rem;
+  }
+
+  .f-title {
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.1rem);
+    font-weight: 800;
+    line-height: 1.6;
+    margin-block: 0.2rem 0.9rem;
+  }
+
+  .f-title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .f-title a:hover {
+    color: var(--accent);
+  }
+
+  .f-dek {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    line-height: 1.95;
+    margin-block-end: 1.1rem;
+  }
+
+  .featured .read {
+    margin-inline-start: auto;
+  }
+
+  .featured .meta {
+    align-items: baseline;
+  }
+
+  .featured .read a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* ستون تیترها */
+  .glance h2 {
+    font-size: 1.02rem;
+    padding-block-end: 0.55rem;
+    border-block-end: 2px solid var(--line-strong);
+  }
+
+  .glance ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .glance li + li {
+    border-block-start: 1px solid var(--line);
+  }
+
+  .glance a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'dot title'
+      'dot sec';
+    column-gap: 0.6rem;
+    padding-block: 0.8rem;
+    text-decoration: none;
+  }
+
+  .glance .dot {
+    grid-area: dot;
+    inline-size: 0.55rem;
+    block-size: 0.55rem;
+    border-radius: 999px;
+    background: var(--sec, var(--accent));
+    margin-block-start: 0.55em;
+  }
+
+  .glance .g-title {
+    grid-area: title;
+    color: var(--ink);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.8;
+  }
+
+  .glance a:hover .g-title {
+    color: var(--accent);
+  }
+
+  .glance .g-sec {
+    grid-area: sec;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+    margin-block-start: 0.15rem;
+  }
+
+  .glance .empty {
+    color: var(--ink-faint);
+    padding-block: 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  /* ── کارت بخش‌ها ── */
   .gates {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
     gap: 1.25rem;
-    padding-block-end: 4rem;
+    padding-block-end: 2.5rem;
   }
 
   .gate {
     display: block;
     background: var(--raised);
     border: 1px solid var(--line);
+    border-block-start: 3px solid var(--sec, var(--accent));
     border-radius: var(--radius);
-    padding: 1.7rem 1.8rem;
+    padding: 1.4rem 1.6rem;
     text-decoration: none;
     color: inherit;
     transition:
@@ -106,53 +348,61 @@ const latest = all
   }
 
   .gate:hover {
-    border-color: var(--accent);
     transform: translateY(-3px);
     box-shadow: 0 12px 32px -20px rgba(28, 33, 43, 0.4);
   }
 
-  .gate h2 {
-    font-size: 1.25rem;
-    margin-block-end: 0.6rem;
-    color: var(--ink);
+  .g-kicker {
+    color: var(--sec, var(--accent));
+    font-weight: 800;
+    font-size: 1.08rem;
+    margin-block: 0 0.15rem;
   }
 
-  .gate p {
+  .g-count {
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+    margin-block-end: 0.7rem;
+  }
+
+  .g-text {
     color: var(--ink-soft);
-    font-size: 0.93rem;
+    font-size: 0.92rem;
     line-height: 1.9;
   }
 
-  .more {
+  .gate .more {
     display: inline-block;
-    margin-block-start: 1.1rem;
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 0.92rem;
+    margin-block-start: 1rem;
+    color: var(--sec, var(--accent));
+    font-weight: 700;
+    font-size: 0.9rem;
   }
 
-  .gate:hover .more {
-    color: var(--accent-deep);
+  /* ── نوار پروژه‌ها ── */
+  .projects {
+    border-block: 1px solid var(--line);
+    padding-block: 0.9rem;
+    margin-block-end: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.8rem;
+    font-size: 0.95rem;
   }
 
-  /* ── تازه‌ترین‌ها ── */
-  .latest {
-    border-block-start: 1px solid var(--line);
-    padding-block: 3rem 2rem;
+  .p-label {
+    color: var(--ink-soft);
   }
 
-  .latest h2 {
-    font-size: 1.25rem;
-    padding-block-end: 0.9rem;
-    border-block-end: 2px solid var(--line-strong);
+  .projects a {
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: 0.01em;
   }
 
-  .latest .list {
-    margin-block-start: 0.25rem;
-  }
-
-  .empty {
+  .p-hint {
     color: var(--ink-faint);
-    padding-block: 2rem;
+    font-size: 0.85rem;
   }
 </style>
