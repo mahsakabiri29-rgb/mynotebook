@@ -5,7 +5,7 @@ pubDate: 2026-11-07
 kind: reading-note
 paper: 'Opdam NJM, van de Sande FH, Bronkhorst E, Cenci MS, Bottenberg P, Pallesen U, Gaengler P, Lindberg A, Huysmans MCDNJM, van Dijken JW. Longevity of posterior composite restorations: a systematic review and meta-analysis. Journal of Dental Research 2014;93(7):943–949. DOI: 10.1177/0022034514544217'
 tags:
-  - Failsafe
+  - Failuresafe
   - ترمیم‌های خلفی
 ---
 
@@ -89,7 +89,7 @@ tags:
 
 :::
 
-## برداشت من برای پروژهٔ Failsafe
+## برداشت من برای پروژهٔ Failuresafe
 
 :::interpretation
 

@@ -29,7 +29,7 @@ const secColor: Record<string, string> = {
 
 const sectionLabel = (p: AnyPost) => {
   if (p.collection === 'notebook') return 'دفترچهٔ یادگیری';
-  if (p.collection === 'failsafe') return 'Failsafe';
+  if (p.collection === 'failsafe') return 'Failuresafe';
   if (p.collection === 'abrz') return 'ABRZ';
   return SECTIONS[p.collection as 'everyone' | 'professionals'].title;
 };
@@ -254,7 +254,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
 
   <section class="container projects reveal" aria-label="پروژه‌های پژوهشی" style="--d:.2s">
     <span class="p-label">پروژه‌های پژوهشی:</span>
-    <a href={SECTIONS.failsafe.href}>Failsafe</a>
+    <a href={SECTIONS.failsafe.href}>Failuresafe</a>
     <span aria-hidden="true">·</span>
     <a href={SECTIONS.abrz.href}>ABRZ</a>
     <span class="p-hint">— مطالعهٔ مقاله‌به‌مقاله، با جدا شدن شواهد از برداشت شخصی</span>

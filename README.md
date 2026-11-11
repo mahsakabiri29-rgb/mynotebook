@@ -30,7 +30,7 @@ npm run inbox    ← پنجرهٔ دوم: ناظر کشویی
 | --- | --- |
 | `inbox/everyone/` | بخش «برای همه» |
 | `inbox/professionals/` | بخش «برای دندان‌پزشکان» |
-| `inbox/failsafe/` | پروژهٔ Failsafe |
+| `inbox/failsafe/` | پروژهٔ Failuresafe |
 | `inbox/abrz/` | پروژهٔ ABRZ |
 | `inbox/notebook/` | دفترچهٔ یادگیری |
 
@@ -51,7 +51,7 @@ npm run inbox    ← پنجرهٔ دوم: ناظر کشویی
 | این پوشه | می‌رود به |
 | --- | --- |
 | `برای دندانپزشکان/projects/ABRZ/` | پروژهٔ ABRZ |
-| `برای دندانپزشکان/projects/failsafe/` | پروژهٔ Failsafe |
+| `برای دندانپزشکان/projects/failsafe/` | پروژهٔ Failuresafe |
 | `برای دندانپزشکان/` | بخش «برای دندان‌پزشکان» |
 | `برای همه/` | بخش «برای همه» |
 
@@ -64,7 +64,7 @@ npm run inbox    ← پنجرهٔ دوم: ناظر کشویی
 | --- | --- | --- |
 | برای همه | `src/content/everyone/` | `/everyone/...` |
 | برای دندان‌پزشکان | `src/content/professionals/` | `/professionals/...` |
-| Failsafe (پروژهٔ پژوهشی) | `src/content/failsafe/` | `/professionals/failsafe/...` |
+| Failuresafe (پروژهٔ پژوهشی) | `src/content/failsafe/` | `/professionals/failsafe/...` |
 | ABRZ (پروژهٔ پژوهشی) | `src/content/abrz/` | `/professionals/abrz/...` |
 | دفترچهٔ یادگیری | `src/content/notebook/` | `/notebook/...` |
 

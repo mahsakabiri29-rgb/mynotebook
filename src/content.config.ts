@@ -16,7 +16,7 @@ import { glob } from 'astro/loaders';
 //  references:               ← اختیاری؛ فهرست منابع
 //    - Opdam NJ, et al. J Dent Res. 2014;93:943-949.
 //  paper: (نقل کامل مقالهٔ مرجع، برای یادداشت‌های مطالعه) ← اختیاری
-//  tags: [Failsafe]          ← اختیاری
+//  tags: [Failuresafe]          ← اختیاری
 //  draft: false              ← اختیاری؛ اگر true باشد منتشر نمی‌شود
 //  ---
 // ─────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ export const collections = {
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/professionals' }),
     schema: entrySchema,
   }),
-  // پروژهٔ Failsafe → src/content/failsafe/
+  // پروژهٔ Failuresafe → src/content/failsafe/
   failsafe: defineCollection({
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/failsafe' }),
     schema: entrySchema,

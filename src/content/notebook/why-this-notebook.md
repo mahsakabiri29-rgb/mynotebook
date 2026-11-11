@@ -26,5 +26,5 @@ tags:
 
 :::
 
-ایدهٔ اولیه برای شروع کار، پروژهٔ [Failsafe](/professionals/failsafe) است: برنامه‌ریزی
+ایدهٔ اولیه برای شروع کار، پروژهٔ [Failuresafe](/professionals/failsafe) است: برنامه‌ریزی
 برای شکست درمان.

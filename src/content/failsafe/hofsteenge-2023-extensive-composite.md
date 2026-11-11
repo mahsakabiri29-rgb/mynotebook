@@ -5,7 +5,7 @@ pubDate: 2026-11-07
 kind: reading-note
 paper: 'Hofsteenge JW, Scholtanus JD, Özcan M, Nolte IM, Cune MS, Gresnigt MMM. Clinical longevity of extensive direct resin composite restorations after amalgam replacement with a mean follow-up of 15 years. Journal of Dentistry 2023;130:104409. DOI: 10.1016/j.jdent.2023.104409 (دسترسی آزاد)'
 tags:
-  - Failsafe
+  - Failuresafe
   - ترمیم‌های وسیع
 changelog:
   - date: 2026-11-07
@@ -86,14 +86,14 @@ Loomans و Özcan، ۲۰۱۶).
 
 :::
 
-## نتیجه‌گیری برای ایدهٔ Failsafe
+## نتیجه‌گیری برای ایدهٔ Failuresafe
 
 :::interpretation
 
 **چیزی که این مقاله پشتیبانی می‌کند:** شکست درمان بخشی از دندان‌پزشکی است و
 اینجا هم اتفاق افتاد: بعد از ۱۵ سال، حدود یک‌چهارم ترمیم‌ها از نظر بقا شکست
 خورده بودند و فقط ۶۲٪ بدون هیچ مداخله‌ای مانده بودند. ولی بیشتر این شکست‌ها
-هنوز راه نجات دندان را باز گذاشتند. این همان معنای عملی Failsafe است: ترمیم
+هنوز راه نجات دندان را باز گذاشتند. این همان معنای عملی Failuresafe است: ترمیم
 را طوری بگذاریم که شکستش دندان را از دست ندهد.
 
 **چیزی که این مقاله ثابت نمی‌کند:**

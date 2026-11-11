@@ -5,7 +5,7 @@ pubDate: 2026-11-07
 kind: lesson
 tags:
   - روش خواندن مقاله
-  - Failsafe
+  - Failuresafe
 ---
 
 وقتی اولین بار نتیجه‌های Hofsteenge 2023 را دیدم، دو عدد متفاوت کنار هم بود:

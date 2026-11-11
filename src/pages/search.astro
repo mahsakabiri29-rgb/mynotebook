@@ -1,0 +1,231 @@
+---
+// صفحهٔ جستجوی سایت‌گرد — ایندکس از /search.json خوانده و در مرورگر فیلتر می‌شود
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+---
+
+<Base title={`جستجو — ${SITE.name}`} description="جستجو در همهٔ یادداشت‌های دفترچهٔ علمی">
+  <section class="page container">
+    <p class="kicker">در همهٔ بخش‌ها</p>
+    <h1>جستجو</h1>
+
+    <div class="bar">
+      <input
+        id="q"
+        type="search"
+        placeholder="مثلاً: ABRZ، بلیچینگ، restorative cycle…"
+        aria-label="عبارت جستجو"
+        autocomplete="off"
+      />
+    </div>
+
+    <p class="status" id="status">در حال آماده‌سازی…</p>
+    <div id="results" class="results" aria-live="polite"></div>
+  </section>
+</Base>
+
+<script>
+  const input = document.getElementById('q') as HTMLInputElement;
+  const status = document.getElementById('status') as HTMLElement;
+  const box = document.getElementById('results') as HTMLElement;
+
+  const COLORS: Record<string, string> = {
+    everyone: '#17706e',
+    professionals: '#1b4079',
+    failsafe: '#1b4079',
+    abrz: '#1b4079',
+    notebook: '#6b4d7f',
+  };
+
+  // یکسان‌سازی: ی/ک عربی → فارسی، حذف نیم‌فاصله، حروف کوچک
+  const norm = (s: string) =>
+    s.replaceAll('ي', 'ی').replaceAll('ك', 'ک').replaceAll('\u200c', ' ').toLowerCase();
+
+  type Item = { t: string; d: string; k: string; c: string; u: string; dt: string; b: string };
+  let index: Item[] | null = null;
+
+  async function load(): Promise<Item[]> {
+    if (index) return index;
+    index = (await (await fetch('/search.json')).json()) as Item[];
+    return index;
+  }
+
+  // الگوی جستجو: بین حروف کاربر، نیم‌فاصلهٔ اختیاری پذیرفته می‌شود
+  function rxFor(qRaw: string): RegExp {
+    const q = norm(qRaw);
+    const parts = q.split('').map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    return new RegExp(parts.join('\u200c?'), 'g');
+  }
+
+  function snippet(b: string, rx: RegExp): string {
+    rx.lastIndex = 0;
+    const m = rx.exec(b);
+    if (!m || m.index === undefined) return b.slice(0, 150) + '…';
+    const s = Math.max(0, m.index - 55);
+    return (s > 0 ? '…' : '') + b.slice(s, m.index + m[0].length + 85) + '…';
+  }
+
+  const faDate = (iso: string) =>
+    new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' }).format(
+      new Date(iso)
+    );
+
+  function render(items: { it: Item; sn?: string }[], heading: string) {
+    status.textContent = heading;
+    box.innerHTML = '';
+    for (const { it, sn } of items) {
+      const a = document.createElement('a');
+      a.className = 'res';
+      a.href = it.u;
+      a.style.setProperty('--sec', COLORS[it.c] ?? '#1b4079');
+
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      const wrap = document.createElement('div');
+      const h = document.createElement('h3');
+      h.textContent = it.t;
+      const p1 = document.createElement('p');
+      p1.className = 'sn';
+      p1.textContent = sn ?? it.d ?? '';
+      if (!p1.textContent) p1.remove();
+      const p2 = document.createElement('p');
+      p2.className = 'm';
+      p2.textContent = `${it.k} · ${faDate(it.dt)}`;
+      wrap.append(h, p1 ?? document.createComment(''), p2);
+      a.append(dot, wrap);
+      box.append(a);
+    }
+  }
+
+  let timer: ReturnType<typeof setTimeout>;
+  async function run() {
+    const qRaw = input.value.trim();
+    if (qRaw.length < 2) {
+      const items = await load();
+      const recent = [...items].sort((a, b) => b.dt.localeCompare(a.dt)).slice(0, 5);
+      render(recent.map((it) => ({ it })), 'تازه‌ترین یادداشت‌ها — یا بالاتر بنویسید تا جستجو کنیم:');
+      return;
+    }
+    const items = await load();
+    const rx = rxFor(qRaw);
+    const hits = items
+      .map((it) => {
+        const t = norm(it.t);
+        const d = norm(it.d);
+        const b = norm(it.b);
+        const qn = norm(qRaw);
+        let s = 0;
+        if (t.includes(qn)) s += 6;
+        if (d.includes(qn)) s += 3;
+        if (b.includes(qn)) s += 1;
+        return { it, s, sn: b.includes(qn) ? snippet(it.b, rxFor(qRaw)) : undefined };
+      })
+      .filter((x) => x.s > 0)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 25);
+
+    if (hits.length === 0) {
+      render([], `چیزی برای «${qRaw}» پیدا نشد.`);
+    } else {
+      render(hits, `${hits.length} نتیجه برای «${qRaw}»:`);
+    }
+  }
+
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(run, 200);
+  });
+
+  // پرکردن اولیه از ?q= و اجرا
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial) input.value = initial;
+  run().catch(() => (status.textContent = 'خطا در بارگذاری ایندکس جستجو.'));
+</script>
+
+<style>
+  .page {
+    padding-block-start: clamp(2.5rem, 7vh, 4rem);
+    max-inline-size: 52rem;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.5rem + 2vw, 2.5rem);
+    font-weight: 800;
+    margin-block: 0.3rem 1.4rem;
+  }
+
+  .bar input {
+    inline-size: 100%;
+    font: inherit;
+    font-size: 1.08rem;
+    color: var(--ink);
+    background: var(--wash);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0.65em 1.4em;
+    outline: none;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .bar input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-wash);
+    background: var(--paper);
+  }
+
+  .status {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin-block: 1.1rem 0.4rem;
+  }
+
+  .results {
+    margin-block-start: 0.6rem;
+  }
+
+  .res {
+    display: flex;
+    gap: 0.8rem;
+    padding-block: 1.1rem;
+    text-decoration: none;
+    border-block-start: 1px solid var(--line);
+  }
+
+  .res:first-child {
+    border-block-start: none;
+  }
+
+  .res .dot {
+    flex: none;
+    inline-size: 0.6rem;
+    block-size: 0.6rem;
+    border-radius: 999px;
+    background: var(--sec, var(--accent));
+    margin-block-start: 0.65em;
+  }
+
+  .res h3 {
+    font-size: 1.08rem;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  .res:hover h3 {
+    color: var(--accent);
+  }
+
+  .res .sn {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin-block-start: 0.2rem;
+  }
+
+  .res .m {
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+    margin-block-start: 0.35rem;
+  }
+</style>

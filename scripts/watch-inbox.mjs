@@ -5,7 +5,7 @@
 //  این اسکریپت آن را به یادداشت سایت تبدیل می‌کند:
 //    inbox/everyone       → بخش «برای همه»
 //    inbox/professionals  → بخش «برای دندان‌پزشکان»
-//    inbox/failsafe       → پروژهٔ Failsafe
+//    inbox/failsafe       → پروژهٔ Failuresafe
 //    inbox/abrz           → پروژهٔ ABRZ
 //    inbox/notebook       → دفترچهٔ یادگیری
 //
