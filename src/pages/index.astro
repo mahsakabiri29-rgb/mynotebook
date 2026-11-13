@@ -1,10 +1,10 @@
 ---
-// صفحهٔ اصلی — چیدمان روزنامه‌ای: نوار تاریخ، یادداشت برجسته،
-// ستون «در یک نگاه»، کارت‌های رنگی بخش‌ها و نوار پروژه‌ها
+// صفحهٔ اصلی — چیدمان روزنامه‌ای فشرده: نوار تاریخ، معرفی کوتاه،
+// نوار باریک «تازه‌ترین»، کارت‌های رنگی بخش‌ها و نوار پروژه‌ها
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { SITE, SECTIONS } from '../config';
-import { faDate, readingMinutes, toFa } from '../lib/format';
+import { faDate, toFa } from '../lib/format';
 
 type AnyPost = Awaited<ReturnType<typeof getCollection<'notebook'>>>[number];
 
@@ -13,11 +13,7 @@ const all = (
   await Promise.all(colls.map((c) => getCollection(c, (p) => !p.data.draft)))
 ).flat();
 const sorted = all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// یادداشت برجسته: تازه‌ترین محتوای اصلی (نه دفترچه)
-const featured = sorted.find((p) => p.collection !== 'notebook') ?? sorted[0];
-// ستون «در یک نگاه»: چهار تیتر بعدی
-const glance = sorted.filter((p) => p !== featured).slice(0, 4);
+const recent = sorted.slice(0, 8);
 
 const secColor: Record<string, string> = {
   everyone: 'var(--sec-everyone)',
@@ -69,8 +65,6 @@ const gates = [
     text: 'پرسش‌های باز، اشتباه‌ها و درس‌ها، تأمل‌ها و ایده‌های خام — ثبتشده در حین یادگیری.',
   },
 ];
-
-const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
 ---
 
 <Base title={`${SITE.name} — ${SITE.tagline}`}>
@@ -89,54 +83,26 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     <p class="lede reveal" style="--d:.12s">
       این‌جا دفترچهٔ یادگیری من است: مقاله‌هایی که می‌خوانم، پرسش‌های بازم،
       اشتباه‌ها و درس‌هایم — با جداشدنِ صریحِ «شواهد علمی» از «برداشت شخصی».
-      این دفترچه اول برای رشد من است؛ نه تبلیغ و نه نمایش تخصص.
     </p>
   </section>
 
-  {
-    featured && (
-      <section class="container front" aria-label="یادداشت برجسته و تیترها">
-        <article class="featured reveal" style={`--sec:${secColor[featured.collection]};--d:.15s`}>
-          <p class="kicker" style={`color:${secColor[featured.collection]}`}>
-            {sectionLabel(featured)}
-          </p>
-          <h2 class="f-title">
-            <a href={hrefOf(featured)}>{featured.data.title}</a>
-          </h2>
-          {featured.data.description && <p class="f-dek">{featured.data.description}</p>}
-          <p class="meta">
-            <time datetime={featured.data.pubDate.toISOString()}>
-              {faDate(featured.data.pubDate)}
-            </time>
-            <span aria-hidden="true">·</span>
-            <span>{toFa(minutes)} دقیقه مطالعه</span>
-            <span class="read">
-              <a href={hrefOf(featured)}>ادامهٔ یادداشت ←</a>
-            </span>
-          </p>
-        </article>
+  <!-- نوار باریک تازه‌ترین‌ها -->
+  <section class="container ticker reveal" aria-label="تازه‌ترین یادداشت‌ها" style="--d:.18s">
+    <span class="t-label">تازه‌ترین:</span>
+    <div class="t-row">
+      {
+        recent.map((p) => (
+          <a class="t-item" href={hrefOf(p)} style={`--sec:${secColor[p.collection]}`}>
+            <span class="dot" aria-hidden="true" />
+            <span class="t-title">{p.data.title}</span>
+            <span class="t-sec">{sectionLabel(p)}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
 
-        <aside class="glance reveal" aria-label="در یک نگاه" style="--d:.25s">
-          <h2>در یک نگاه</h2>
-          <ul>
-            {
-              glance.map((p) => (
-                <li style={`--sec:${secColor[p.collection]}`}>
-                  <a href={hrefOf(p)}>
-                    <span class="dot" aria-hidden="true" />
-                    <span class="g-title">{p.data.title}</span>
-                    <span class="g-sec">{sectionLabel(p)}</span>
-                  </a>
-                </li>
-              ))
-            }
-            {glance.length === 0 && <li class="empty">هنوز یادداشتی منتشر نشده است.</li>}
-          </ul>
-        </aside>
-      </section>
-    )
-  }
-
+  <!-- کارت‌های بخش‌ها -->
   <section class="container gates" aria-label="بخش‌های سایت">
     {
       gates.map((g, i) => (
@@ -294,15 +260,15 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     }
   }
 
-  /* ── معرفی ── */
+  /* ── معرفی — فشرده ── */
   .hero {
-    padding-block: clamp(2.5rem, 8vh, 4.5rem) 2.25rem;
+    padding-block: clamp(2rem, 6vh, 3.2rem) 1.6rem;
   }
 
   .title {
-    font-size: clamp(2.4rem, 1.7rem + 3.2vw, 3.6rem);
+    font-size: clamp(2.1rem, 1.6rem + 2.6vw, 3rem);
     font-weight: 800;
-    margin-block: 0.35rem 1.1rem;
+    margin-block: 0.3rem 0.85rem;
     letter-spacing: -0.01em;
     background: linear-gradient(
       100deg,
@@ -318,132 +284,85 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
   }
 
   .lede {
-    font-size: 1.13rem;
-    color: var(--ink-soft);
-    max-inline-size: 38rem;
-    line-height: 2.05;
-  }
-
-  /* ── برجسته + در یک نگاه ── */
-  .front {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-block-end: 3rem;
-    align-items: start;
-  }
-
-  @media (min-width: 60rem) {
-    .front {
-      grid-template-columns: 2fr 1fr;
-      gap: 3.5rem;
-    }
-  }
-
-  .featured {
-    background: var(--raised);
-    border: 1px solid var(--line);
-    border-block-start: 3px solid var(--sec, var(--accent));
-    border-radius: var(--radius);
-    padding: 1.9rem 2rem 1.6rem;
-  }
-
-  .f-title {
-    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.1rem);
-    font-weight: 800;
-    line-height: 1.6;
-    margin-block: 0.2rem 0.9rem;
-  }
-
-  .f-title a {
-    color: var(--ink);
-    text-decoration: none;
-  }
-
-  .f-title a:hover {
-    color: var(--sec, var(--accent));
-  }
-
-  .f-dek {
-    color: var(--ink-soft);
     font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-inline-size: 40rem;
     line-height: 1.95;
-    margin-block-end: 1.1rem;
   }
 
-  .featured .read {
-    margin-inline-start: auto;
+  /* ── نوار باریک تازه‌ترین‌ها ── */
+  .ticker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding-block: 0.55rem;
+    margin-block-end: 2.2rem;
+    border-block: 1px solid var(--line);
+    background: var(--wash);
+    border-radius: 10px;
+    padding-inline: 0.9rem;
   }
 
-  .featured .meta {
-    align-items: baseline;
-  }
-
-  .featured .read a {
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  /* ستون تیترها */
-  .glance h2 {
-    font-size: 1.02rem;
-    padding-block-end: 0.55rem;
-    border-block-end: 2px solid var(--line-strong);
-  }
-
-  .glance ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .glance li + li {
-    border-block-start: 1px solid var(--line);
-  }
-
-  .glance a {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      'dot title'
-      'dot sec';
-    column-gap: 0.6rem;
-    padding-block: 0.8rem;
-    text-decoration: none;
-  }
-
-  .glance .dot {
-    grid-area: dot;
-    inline-size: 0.55rem;
-    block-size: 0.55rem;
-    border-radius: 999px;
-    background: var(--sec, var(--accent));
-    margin-block-start: 0.55em;
-  }
-
-  .glance .g-title {
-    grid-area: title;
-    color: var(--ink);
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.8;
-  }
-
-  .glance a:hover .g-title {
+  .t-label {
+    flex: none;
+    font-size: 0.82rem;
+    font-weight: 800;
     color: var(--accent);
   }
 
-  .glance .g-sec {
-    grid-area: sec;
-    color: var(--ink-faint);
-    font-size: 0.78rem;
-    margin-block-start: 0.15rem;
+  .t-row {
+    display: flex;
+    gap: 0.55rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-block: 0.35rem;
   }
 
-  .glance .empty {
+  .t-item {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.3em 0.95em;
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .t-item:hover {
+    border-color: var(--sec, var(--accent));
+    background: color-mix(in srgb, var(--sec) 7%, var(--paper));
+  }
+
+  .t-item .dot {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: 999px;
+    background: var(--sec, var(--accent));
+  }
+
+  .t-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    max-inline-size: 17rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .t-item:hover .t-title {
+    color: var(--accent);
+  }
+
+  .t-sec {
+    font-size: 0.72rem;
     color: var(--ink-faint);
-    padding-block: 1.2rem;
-    font-size: 0.9rem;
+    white-space: nowrap;
   }
 
   /* ── کارت بخش‌ها ── */
@@ -451,7 +370,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
     gap: 1.25rem;
-    padding-block-end: 2.5rem;
+    padding-block-end: 2.25rem;
   }
 
   .gate {
@@ -460,7 +379,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     border: 1px solid var(--line);
     border-block-start: 3px solid var(--sec, var(--accent));
     border-radius: var(--radius);
-    padding: 1.4rem 1.6rem;
+    padding: 1.3rem 1.5rem;
     text-decoration: none;
     color: inherit;
     transition:
@@ -475,12 +394,9 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
     box-shadow: 0 14px 36px -18px color-mix(in srgb, var(--sec) 50%, transparent);
   }
 
-  .gate .more {
-    transition: transform 0.2s ease;
-  }
-
-  .gate:hover .more {
-    transform: translateX(-4px);
+  .gate .scene {
+    inline-size: min(200px, 64%);
+    margin-block-end: 0.25rem;
   }
 
   .g-kicker {
@@ -493,7 +409,7 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
   .g-count {
     color: var(--ink-faint);
     font-size: 0.8rem;
-    margin-block-end: 0.7rem;
+    margin-block-end: 0.6rem;
   }
 
   .g-text {
@@ -504,10 +420,15 @@ const minutes = featured ? readingMinutes(featured.body ?? '') : 0;
 
   .gate .more {
     display: inline-block;
-    margin-block-start: 1rem;
+    margin-block-start: 0.9rem;
     color: var(--sec, var(--accent));
     font-weight: 700;
     font-size: 0.9rem;
+    transition: transform 0.2s ease;
+  }
+
+  .gate:hover .more {
+    transform: translateX(-4px);
   }
 
   /* ── نوار پروژه‌ها ── */

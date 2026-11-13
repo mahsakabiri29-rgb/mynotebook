@@ -35,10 +35,15 @@ const isActive = (href: string) =>
         }
       </ul>
     </nav>
-    <form class="search" action="/search" role="search">
+    <form class="search suggest-wrap" action="/search" role="search">
+      <svg class="s-icon" viewBox="0 0 20 20" aria-hidden="true">
+        <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2" />
+        <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
       <input
         type="search"
         name="q"
+        data-suggest
         placeholder="جستجو…"
         aria-label="جستجو در یادداشت‌ها"
         autocomplete="off"
@@ -46,6 +51,10 @@ const isActive = (href: string) =>
     </form>
   </div>
 </header>
+
+<script>
+  import '../scripts/search-suggest';
+</script>
 
 <style>
   .masthead {
@@ -106,22 +115,36 @@ const isActive = (href: string) =>
 
   .search {
     margin-inline-start: auto;
+    flex: 0 1 15rem;
+  }
+
+  .search .s-icon {
+    position: absolute;
+    inset-inline-start: 0.85rem;
+    top: 50%;
+    translate: 0 -50%;
+    inline-size: 1rem;
+    block-size: 1rem;
+    color: var(--ink-faint);
+    pointer-events: none;
+    transition: color 0.2s ease;
   }
 
   .search input {
     font: inherit;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: var(--ink);
     background: var(--wash);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 0.3em 1.1em;
-    inline-size: 9.5rem;
+    padding-block: 0.38em;
+    padding-inline: 2.6em 1.1em;
+    inline-size: 100%;
     outline: none;
     transition:
-      inline-size 0.25s ease,
       border-color 0.2s ease,
-      background 0.2s ease;
+      background 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .search input::placeholder {
@@ -129,23 +152,19 @@ const isActive = (href: string) =>
   }
 
   .search input:focus {
-    inline-size: 15rem;
     border-color: var(--accent);
     background: var(--paper);
+    box-shadow: 0 0 0 4px var(--accent-wash);
+  }
+
+  .search:focus-within .s-icon {
+    color: var(--accent);
   }
 
   @media (max-width: 48rem) {
     .search {
       order: 3;
       flex-basis: 100%;
-    }
-
-    .search input {
-      inline-size: 100%;
-    }
-
-    .search input:focus {
-      inline-size: 100%;
     }
   }
 </style>
