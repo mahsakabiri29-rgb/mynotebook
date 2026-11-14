@@ -21,6 +21,7 @@ const COLORS: Record<string, string> = {
   failsafe: '#1b4079',
   abrz: '#1b4079',
   notebook: '#6b4d7f',
+  alphabet: '#0f3a4a',
 };
 
 function attach(input: HTMLInputElement) {

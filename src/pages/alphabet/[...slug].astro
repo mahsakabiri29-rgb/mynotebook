@@ -1,0 +1,264 @@
+---
+// صفحهٔ اختصاصی هر فصل پروژهٔ «الفبای ادهزیو دنتیستری» — طراحی مجله‌ای با پالت پروژه
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../config';
+import { faDate, toFa } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const chapters = await getCollection('alphabet', (p) => !p.data.draft);
+  return chapters.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const STATUS = {
+  'not-started': { fa: 'شروع نشده', cls: 'st-not' },
+  reading: { fa: 'در حال مطالعه', cls: 'st-reading' },
+  completed: { fa: 'کامل‌شده', cls: 'st-done' },
+} as const;
+const st = STATUS[post.data.status as keyof typeof STATUS];
+
+const total = (await getCollection('alphabet', (p) => !p.data.draft)).length;
+---
+
+<Base title={`${post.data.title} — The Alphabet of Adhesive Dentistry — ${SITE.name}`} description={post.data.description}>
+  <div class="progress" aria-hidden="true"><span id="pbar"></span></div>
+
+  <article class="chapter">
+    <!-- سرصفحهٔ فصل — بژ گرم -->
+    <header class="ch-head">
+      <div class="container inner">
+        <p class="ch-k">
+          فصل {toFa(post.data.chapter)} از {toFa(total)}
+          <span class="sep">·</span>
+          <a href="/alphabet">الفبای ادهزیو دنتیستری</a>
+        </p>
+        <span class={`badge ${st.cls}`}>{st.fa}</span>
+        <h1>{post.data.title}</h1>
+        {post.data.description && <p class="dek">{post.data.description}</p>}
+        <p class="meta">
+          <time datetime={post.data.pubDate.toISOString()}>{faDate(post.data.pubDate)}</time>
+          {
+            post.data.updated && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span>
+                  به‌روزشده:{' '}
+                  <time datetime={post.data.updated.toISOString()}>
+                    {faDate(post.data.updated)}
+                  </time>
+                </span>
+              </>
+            )
+          }
+        </p>
+        {
+          post.data.paper && (
+            <p class="paper" dir="ltr">
+              <strong>Paper:</strong> {post.data.paper}
+            </p>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="prose">
+        <Content />
+      </div>
+
+      {
+        post.data.references.length > 0 && (
+          <section class="refs" aria-label="منابع">
+            <h2>منابع</h2>
+            <ol>
+              {post.data.references.map((ref) => (
+                <li dir="ltr">{ref}</li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
+
+      {
+        post.data.changelog.length > 0 && (
+          <section class="changelog" aria-label="سابقهٔ تغییرات">
+            <h2>سابقهٔ این فصل</h2>
+            <ul>
+              {post.data.changelog.map((c) => (
+                <li>
+                  <time datetime={c.date.toISOString()}>{faDate(c.date)}</time> — {c.note}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <p class="back">
+        <a href="/alphabet">بازگشت به الفبای ادهزیو دنتیستری</a>
+      </p>
+    </div>
+  </article>
+
+  <script>
+    // نوار پیشرفت مطالعه
+    const bar = document.getElementById('pbar');
+    if (bar) {
+      const upd = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+      };
+      document.addEventListener('scroll', upd, { passive: true });
+      upd();
+    }
+  </script>
+</Base>
+
+<style>
+  .chapter {
+    --p-petrol: #0f3a4a;
+    --p-blue: #5d8dab;
+    --p-beige: #f3ecdf;
+    --p-beige-deep: #e9dfc9;
+    --p-gray: #5b6472;
+    --p-line: #d9d2c2;
+  }
+
+  .ch-head {
+    background: linear-gradient(180deg, var(--p-beige) 0%, var(--p-beige-deep) 100%);
+    border-block-end: 3px solid var(--p-petrol);
+  }
+
+  .ch-head .inner {
+    padding-block: clamp(2.6rem, 8vh, 4.2rem) 2.2rem;
+    max-inline-size: calc(var(--prose) + 2 * var(--gutter));
+  }
+
+  .ch-k {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--p-blue);
+    margin-block: 0 0.9rem;
+  }
+
+  .ch-k .sep {
+    margin-inline: 0.4rem;
+    color: var(--p-gray);
+  }
+
+  .ch-k a {
+    color: var(--p-petrol);
+    text-decoration: none;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border-radius: 999px;
+    padding: 0.25em 1em;
+    color: #fff;
+    background: var(--p-gray);
+    margin-block-end: 0.9rem;
+  }
+
+  .badge.st-not {
+    background: #8a93a3;
+  }
+
+  .badge.st-reading {
+    background: var(--p-blue);
+  }
+
+  .badge.st-done {
+    background: var(--p-petrol);
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.4rem + 2.6vw, 2.9rem);
+    font-weight: 800;
+    color: var(--p-petrol);
+    line-height: 1.4;
+    margin-block: 0 0.9rem;
+  }
+
+  .dek {
+    font-size: 1.05rem;
+    color: var(--p-gray);
+    line-height: 2;
+    margin-block-end: 1.1rem;
+  }
+
+  .meta {
+    font-size: 0.85rem;
+    color: var(--p-gray);
+    margin-block-end: 1.4rem;
+  }
+
+  .paper {
+    font-size: 0.85rem;
+    color: var(--p-gray);
+    background: #ffffff;
+    border: 1px solid var(--p-line);
+    border-radius: 8px;
+    padding: 0.75em 1em;
+    text-align: left;
+    line-height: 1.85;
+  }
+
+  .paper strong {
+    color: var(--p-petrol);
+  }
+
+  .chapter :global(.prose) {
+    max-inline-size: var(--prose);
+    margin-inline: auto;
+    padding-block: 2.4rem 0.5rem;
+  }
+
+  .refs,
+  .changelog {
+    max-inline-size: var(--prose);
+    margin-inline: auto;
+  }
+
+  .refs h2,
+  .changelog h2 {
+    font-size: 1.02rem;
+    color: var(--p-petrol);
+    margin-block: 2.2rem 0.6rem;
+  }
+
+  .refs ol {
+    padding-inline-start: 1.6em;
+    font-size: 0.85rem;
+    color: var(--p-gray);
+    line-height: 1.9;
+    text-align: left;
+  }
+
+  .changelog ul {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9rem;
+    color: var(--p-gray);
+  }
+
+  .back {
+    max-inline-size: var(--prose);
+    margin-inline: auto;
+    margin-block: 2.8rem;
+    font-size: 0.95rem;
+  }
+
+  .progress span {
+    background: linear-gradient(90deg, var(--p-petrol), var(--p-blue));
+  }
+</style>

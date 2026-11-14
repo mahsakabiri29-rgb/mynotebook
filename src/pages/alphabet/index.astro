@@ -1,0 +1,472 @@
+---
+// صفحهٔ پروژهٔ «الفبای ادهزیو دنتیستری» — طراحی editorial با پالت اختصاصی:
+// آبی نفتی، آبی خاکستری #5d8dab، سفید، بژ گرم و خاکستری سرد
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../config';
+import { faDate, toFa } from '../../lib/format';
+
+const chapters = (await getCollection('alphabet', (p) => !p.data.draft)).sort(
+  (a, b) => a.data.chapter - b.data.chapter
+);
+
+const notes = (await getCollection('notebook', (p) => !p.data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+
+const STATUS = {
+  'not-started': { fa: 'شروع نشده', cls: 'st-not' },
+  reading: { fa: 'در حال مطالعه', cls: 'st-reading' },
+  completed: { fa: 'کامل‌شده', cls: 'st-done' },
+} as const;
+
+const img: Record<string, string> = {
+  1: '/images/alphabet/sem-smear-plug.jpg',
+  2: '/images/alphabet/sem-dentin-moist.jpg',
+};
+
+const desc: Record<number, string> = {
+  1: 'کجا باید تراش را متوقف کرد؟ شواهدِ انتخاب endpoint در حذف پوسیدگی عمیق.',
+  2: 'از acid-etch بونوکور (۱۹۵۵) تا restoratives خودچسبنده — تاریخ تحول adhesiveها.',
+};
+---
+
+<Base title={`The Alphabet of Adhesive Dentistry — ${SITE.name}`} description="پروژهٔ آموزشی الفبای ادهزیو دنتیستری — مسیر یادگیری مستمر در Adhesive Dentistry">
+  <div class="alpha">
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="k">پروژهٔ آموزشی · دفترچهٔ علمی من</p>
+          <h1>The Alphabet of<br />Adhesive Dentistry</h1>
+          <p class="fa-title">الفبای ادهزیو دنتیستری</p>
+          <p class="lede">
+            این پروژه نه یک دورهٔ تجاری است و نه مرجع کامل؛ سندِ زندهٔ یک مسیر
+            یادگیری مستمر است: خواندن مقاله‌های معتبر، تحلیل انتقادی شواهد،
+            و پیونددادن آن‌ها به تصمیم‌های بالینی — فصل‌به‌فصل، حرف‌به‌حرف.
+          </p>
+          <p class="hero-meta">
+            {toFa(chapters.length)} فصل
+            · {toFa(chapters.filter((c) => c.data.status === 'completed').length)} کامل‌شده
+            · {toFa(chapters.filter((c) => c.data.status === 'reading').length)} در حال مطالعه
+          </p>
+        </div>
+
+        <figure class="hero-fig">
+          <img src="/images/alphabet/sem-dentin-moist.jpg" alt="تصویر SEM از سطح دنتین اچ‌شده که پس از آبکشی مرطوب نگه داشته شده" loading="eager" />
+          <figcaption>
+            SEM: دنتینِ اچ‌شده که پس از آبکشیِ etchant مرطوب مانده است —
+            حفره‌های اینترتوپولار، همان‌جایی که ماجرا شروع می‌شود.
+            عکس: Pinkmanggis / Wikimedia Commons، CC BY-SA 4.0
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ── مسیر یادگیری ── -->
+    <section class="container path reveal">
+      <h2>مسیر یادگیری هر فصل</h2>
+      <ol>
+        <li><span>۱</span>خواندن عمیق مقالهٔ مرجع فصل</li>
+        <li><span>۲</span>یادداشت ساخت‌یافته: شواهد جدا از برداشت</li>
+        <li><span>۳</span>پیوند با تصمیم‌های بالینی مطب</li>
+      </ol>
+    </section>
+
+    <!-- ── فصل‌ها ── -->
+    <section class="container chapters" aria-label="فصل‌ها">
+      <h2>فصل‌ها</h2>
+      <div class="grid">
+        {
+          chapters.map((c, i) => (
+            <a class="card reveal" href={`/alphabet/${c.id}`} style={`--d:${i * 0.1}s`}>
+              <div class="card-img">
+                <img src={img[c.data.chapter] ?? ''} alt={`SEM مرتبط با فصل ${c.data.chapter}`} loading="lazy" />
+                <span class="num">{String(c.data.chapter).padStart(2, '0')}</span>
+                <span class={`badge ${STATUS[c.data.status as keyof typeof STATUS].cls}`}>
+                  {STATUS[c.data.status as keyof typeof STATUS].fa}
+                </span>
+              </div>
+              <div class="card-body">
+                <p class="ch-k">Chapter {String(c.data.chapter).padStart(2, '0')}</p>
+                <h3>{c.data.title}</h3>
+                <p class="ch-d">{desc[c.data.chapter] ?? c.data.description}</p>
+                <p class="ch-meta">
+                  <time datetime={c.data.pubDate.toISOString()}>{faDate(c.data.pubDate)}</time>
+                  <span class="go">ورود به فصل ←</span>
+                </p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      <p class="future">فصل‌های بعدی با پیش رفتن مسیر مطالعه به این فهرست اضافه می‌شوند.</p>
+    </section>
+
+    <!-- ── آخرین یادداشت‌ها ── -->
+    <section class="container notes" aria-label="آخرین یادداشت‌ها">
+      <h2>آخرین یادداشت‌ها و آموخته‌ها</h2>
+      <div class="n-grid">
+        {
+          notes.map((n, i) => (
+            <a class="n-card reveal" href={`/notebook/${n.id}`} style={`--d:${i * 0.08}s`}>
+              <p class="n-date">
+                <time datetime={n.data.pubDate.toISOString()}>{faDate(n.data.pubDate)}</time>
+              </p>
+              <h3>{n.data.title}</h3>
+              {n.data.description && <p class="n-d">{n.data.description}</p>}
+            </a>
+          ))
+        }
+      </div>
+      <a class="all-notes" href="/notebook">همهٔ یادداشت‌های دفترچه ←</a>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* پالت اختصاصی پروژه */
+  .alpha {
+    --p-petrol: #0f3a4a;
+    --p-petrol-deep: #0a2a37;
+    --p-blue: #5d8dab;
+    --p-beige: #f3ecdf;
+    --p-beige-deep: #e9dfc9;
+    --p-gray: #5b6472;
+    --p-line: #d9d2c2;
+  }
+
+  .alpha h2 {
+    font-size: 1.25rem;
+    color: var(--p-petrol);
+    margin-block: 0 1.1rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(180deg, var(--p-beige) 0%, var(--p-beige-deep) 100%);
+    border-block-end: 3px solid var(--p-petrol);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.2rem;
+    padding-block: clamp(2.8rem, 9vh, 4.8rem);
+    align-items: center;
+  }
+
+  @media (min-width: 60rem) {
+    .hero-grid {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3.5rem;
+    }
+  }
+
+  .hero .k {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--p-blue);
+    margin-block: 0 0.8rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.1rem, 1.5rem + 3vw, 3.4rem);
+    font-weight: 800;
+    color: var(--p-petrol);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .fa-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--p-gray);
+    margin-block: 0.5rem 1.2rem;
+  }
+
+  .lede {
+    color: var(--p-gray);
+    font-size: 1.03rem;
+    line-height: 2.05;
+    max-inline-size: 34rem;
+  }
+
+  .hero-meta {
+    margin-block-start: 1.3rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--p-petrol);
+    background: color-mix(in srgb, #ffffff 65%, transparent);
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.35em 1.2em;
+    border: 1px solid var(--p-line);
+  }
+
+  .hero-fig {
+    margin: 0;
+    background: #ffffff;
+    border: 1px solid var(--p-line);
+    border-radius: var(--radius);
+    padding: 0.7rem;
+    box-shadow: 0 18px 44px -24px rgba(15, 58, 74, 0.4);
+  }
+
+  .hero-fig img {
+    inline-size: 100%;
+    display: block;
+    border-radius: 8px;
+    filter: grayscale(12%);
+  }
+
+  .hero-fig figcaption {
+    font-size: 0.78rem;
+    color: var(--p-gray);
+    line-height: 1.9;
+    padding-block: 0.6rem 0.2rem;
+  }
+
+  /* ── مسیر یادگیری ── */
+  .path {
+    padding-block: 2.6rem 0.5rem;
+  }
+
+  .path ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .path li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--wash);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .path li span {
+    flex: none;
+    inline-size: 1.7rem;
+    block-size: 1.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--p-petrol);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  /* ── فصل‌ها ── */
+  .chapters {
+    padding-block: 2.6rem 1.5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: 1.4rem;
+  }
+
+  .card {
+    display: block;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px -20px color-mix(in srgb, var(--p-petrol) 45%, transparent);
+  }
+
+  .card-img {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--p-beige);
+  }
+
+  .card-img img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    filter: grayscale(35%) contrast(1.05);
+    transition:
+      filter 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  .card:hover .card-img img {
+    filter: grayscale(0%);
+    transform: scale(1.04);
+  }
+
+  .card-img .num {
+    position: absolute;
+    inset-block-start: 0.6rem;
+    inset-inline-start: 0.8rem;
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+    letter-spacing: 0.02em;
+  }
+
+  .badge {
+    position: absolute;
+    inset-block-end: 0.7rem;
+    inset-inline-end: 0.8rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    border-radius: 999px;
+    padding: 0.2em 0.9em;
+    color: #fff;
+    background: var(--p-gray);
+  }
+
+  .badge.st-not {
+    background: #8a93a3;
+  }
+
+  .badge.st-reading {
+    background: var(--p-blue);
+  }
+
+  .badge.st-done {
+    background: var(--p-petrol);
+  }
+
+  .card-body {
+    padding: 1.1rem 1.3rem 1.2rem;
+  }
+
+  .ch-k {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--p-blue);
+    text-transform: uppercase;
+    margin-block: 0 0.3rem;
+  }
+
+  .card h3 {
+    font-size: 1.18rem;
+    color: var(--p-petrol);
+    line-height: 1.6;
+  }
+
+  .ch-d {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin-block: 0.45rem 0.9rem;
+  }
+
+  .ch-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  .ch-meta .go {
+    font-weight: 700;
+    color: var(--p-petrol);
+  }
+
+  .card:hover .go {
+    color: var(--p-blue);
+  }
+
+  .future {
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    margin-block-start: 1rem;
+  }
+
+  /* ── آخرین یادداشت‌ها ── */
+  .notes {
+    padding-block: 2.2rem 3rem;
+    border-block-start: 1px solid var(--line);
+    margin-block-start: 1.5rem;
+  }
+
+  .n-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 1rem;
+  }
+
+  .n-card {
+    display: block;
+    background: var(--p-beige);
+    border: 1px solid var(--p-line);
+    border-radius: var(--radius);
+    padding: 1.05rem 1.2rem;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .n-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -18px color-mix(in srgb, var(--p-petrol) 40%, transparent);
+  }
+
+  .n-date {
+    font-size: 0.75rem;
+    color: var(--p-gray);
+    margin-block: 0 0.35rem;
+  }
+
+  .n-card h3 {
+    font-size: 0.98rem;
+    color: var(--p-petrol);
+    line-height: 1.75;
+  }
+
+  .n-d {
+    color: var(--p-gray);
+    font-size: 0.83rem;
+    line-height: 1.85;
+    margin-block-start: 0.35rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .all-notes {
+    display: inline-block;
+    margin-block-start: 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--p-petrol);
+    text-decoration: none;
+  }
+
+  .all-notes:hover {
+    color: var(--p-blue);
+  }
+</style>

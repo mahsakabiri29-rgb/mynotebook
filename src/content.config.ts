@@ -64,4 +64,22 @@ export const collections = {
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notebook' }),
     schema: entrySchema,
   }),
+  // پروژهٔ «الفبای ادهزیو دنتیستری» → src/content/alphabet/
+  alphabet: defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/alphabet' }),
+    schema: z.object({
+      title: z.string(),
+      description: z.string().default(''),
+      pubDate: z.coerce.date(),
+      chapter: z.number(),
+      status: z.enum(['not-started', 'reading', 'completed']).default('not-started'),
+      paper: z.string().default(''),
+      references: z.array(z.string()).default([]),
+      changelog: z
+        .array(z.object({ date: z.coerce.date(), note: z.string() }))
+        .default([]),
+      tags: z.array(z.string()).default([]),
+      draft: z.boolean().default(false),
+    }),
+  }),
 };

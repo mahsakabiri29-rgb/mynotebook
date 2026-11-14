@@ -15,3 +15,8 @@
 
 - `whitening.jpg` — Jameswasswa، «Preparing Teeth Whitening Materials for Dental Treatment»، Wikimedia Commons، مجوز CC BY-SA 4.0
   https://commons.wikimedia.org/wiki/File:Preparing_Teeth_Whitening_Materials_for_Dental_Treatment.jpg
+
+- `alphabet/sem-smear-plug.jpg` — Pinkmanggis، «SEM of smear plug»، Wikimedia Commons، مجوز CC BY-SA 4.0
+  https://commons.wikimedia.org/wiki/File:SEM_of_smear_plug.jpg
+- `alphabet/sem-dentin-moist.jpg` — Pinkmanggis، «SEM of dentin that was kept moist after rinsing off the etchant»، Wikimedia Commons، مجوز CC BY-SA 4.0
+  https://commons.wikimedia.org/wiki/File:SEM_of_dentin_that_was_kept_moist_after_rinsing_off_the_etchant.jpg
