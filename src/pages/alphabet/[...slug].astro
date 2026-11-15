@@ -2,6 +2,7 @@
 // صفحهٔ اختصاصی هر فصل پروژهٔ «الفبای ادهزیو دنتیستری» — طراحی مجله‌ای با پالت پروژه
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import VoiceSummary from '../../components/VoiceSummary.astro';
 import { SITE } from '../../config';
 import { faDate, toFa } from '../../lib/format';
 
@@ -68,6 +69,11 @@ const total = (await getCollection('alphabet', (p) => !p.data.draft)).length;
     </header>
 
     <div class="container">
+      {
+        post.data.voiceSummary && (
+          <VoiceSummary text={post.data.voiceSummary} label={`خلاصهٔ صوتی فصل ${toFa(post.data.chapter)} — ویس فارسی`} />
+        )
+      }
       <div class="prose">
         <Content />
       </div>

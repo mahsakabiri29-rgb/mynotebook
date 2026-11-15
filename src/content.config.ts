@@ -74,6 +74,7 @@ export const collections = {
       chapter: z.number(),
       status: z.enum(['not-started', 'reading', 'completed']).default('not-started'),
       paper: z.string().default(''),
+      voiceSummary: z.string().default(''),
       references: z.array(z.string()).default([]),
       changelog: z
         .array(z.object({ date: z.coerce.date(), note: z.string() }))

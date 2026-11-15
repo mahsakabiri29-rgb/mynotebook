@@ -13,7 +13,7 @@
 
 import { visit } from 'unist-util-visit';
 
-const BLOCKS = new Set(['evidence', 'interpretation', 'experience', 'hypothesis']);
+const BLOCKS = new Set(['evidence', 'interpretation', 'experience', 'hypothesis', 'notes']);
 
 export default function remarkBlocks() {
   return (tree) => {
