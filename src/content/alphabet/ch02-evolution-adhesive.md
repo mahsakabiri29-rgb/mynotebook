@@ -26,6 +26,12 @@ changelog:
 <div class="concept"><p class="ct">Type &amp; Aim</p><p>مقالهٔ مرور مبتنی بر literature با ماهیت صریح «OPINION PAPER» — مرور انتقادی ۱۴ محور کلیدی: تاریخ، مکانیسم‌های چسبندگی، مفهوم AD، طبقه‌بندی E&R/SE، ترازهای plus/minus، adhesiveهای gold-standard، مسیرهای توصیه‌شدهٔ bonding، تخریب باند و هشت راهکار حفظ آن، Universalها و آیندهٔ self-adhesiveها.</p></div>
 </div>
 
+
+<figure>
+  <img src="/images/alphabet/ch02-cover.png" alt="صفحهٔ عنوان مقاله" loading="lazy" />
+  <figcaption>صفحهٔ عنوان مقاله از فایل PDF — Journal of Adhesive Dentistry 2020</figcaption>
+</figure>
+
 ## ۲. سؤال اصلی مقاله
 
 پس از حدود ۶۵ سال از acid-etch بونوکور، **technology چسبندگی دندان‌پزشکی امروز کجاست، چه چیزی واقعاً اثبات شده و کدام مسیرهای bonding باید انتخاب شوند؟** نویسنده‌ها به‌جای فهرست‌کردن محصولات، پرسش را این‌طور می‌سازند: مکانیسم‌های اولیهٔ چسبندگی به enamel و — دشوارتر — به dentin چیست؟ کدام طبقه‌بندی‌ها و کدام محصولات با شواهد lab و بالینی بلندمدت قابل دفاع‌اند؟ و مسیر بالینیِ توصیه‌شده برای باندِ reliable و durable چیست؟

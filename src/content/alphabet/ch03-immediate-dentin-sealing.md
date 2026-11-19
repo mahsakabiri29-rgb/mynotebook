@@ -26,6 +26,12 @@ changelog:
 <div class="concept"><p class="ct">Type &amp; Aim</p><p>Case Report به‌همراه مرور evidence-based (بیش از ۳۰ مقاله، بیشتر دربارهٔ باند دنتین در ترمیم‌های غیرمستقیم) — هدف: اصلاح زمانِ کاربرد dentin bonding agent در ترمیم‌های غیرمستقیم چسبنده: بلافاصله بعد از تراش و قبل از قالب‌گیری.</p></div>
 </div>
 
+
+<figure>
+  <img src="/images/alphabet/ch03-cover.png" alt="صفحهٔ عنوان مقاله" loading="lazy" />
+  <figcaption>صفحهٔ عنوان مقاله از فایل PDF — J Esthet Restor Dent 2005</figcaption>
+</figure>
+
 ## ۲. سؤال اصلی مقاله
 
 در ترمیم‌های غیرمستقیم چسبنده (inlay، onlay، veneer)، آماده‌سازی دندان سطح وسیعی از
