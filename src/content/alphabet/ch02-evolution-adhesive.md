@@ -45,9 +45,18 @@ changelog:
 
 :::
 
+**شکل اصلی مقاله:**
+
+<figure>
+  <img src="/images/alphabet/ch02-fig1-timeline.png" alt="شکل ۱ مقاله: خط زمانی تحول adhesive dentistry از دههٔ ۱۹۵۰ تا امروز" loading="lazy" />
+  <figcaption>شکل ۱ از خود مقاله (Van Meerbeek 2020): خط زمانی تحول adhesive dentistry — از کارهای آغازین هاگر و بونوکور تا adhesiveهای یونیورسال امروز. منبع: فایل PDF مقاله.</figcaption>
+</figure>
+
+**بازطراحی آموزشی (برای مرور سریع):**
+
 <!-- ⚠️ تصویر آموزشی — بازطراحی ساده‌شدهٔ Fig 1 مقاله؛ تصویر واقعی مقاله نیست -->
 <figure class="anim reveal">
-  <svg viewBox="0 0 660 210" style="max-width:660px;display:block;margin-inline:auto;overflow:visible">
+  <svg viewBox="0 0 660 210" style="max-width:660px;direction:rtl;display:block;margin-inline:auto;overflow:visible">
     <line x1="30" y1="105" x2="630" y2="105" stroke="#0f3a4a" stroke-width="2.5"/>
     <g font-size="10" text-anchor="middle">
       <circle cx="60" cy="105" r="6" fill="#5d8dab"/><text x="60" y="82" font-weight="700" fill="#0f3a4a">۱۹۵۱</text><text x="60" y="128" fill="#5b6472">Hagger: GPDM</text>
@@ -82,6 +91,11 @@ changelog:
 **10-MDP** مسیر «modified adhesion» را می‌رود: هم به Caِ HAp پیوند یونی پایدار می‌سازد و هم Ca آزاد می‌کند که نیروی محرکهٔ **nanolayering** — لایه‌های نانومتری ~۴ نانومتری از نمک‌های 10-MDP-Ca (اثبات شیمیایی: Fukegawa 2006؛ اثبات تصویری TEM: Yoshihara 2010) — می‌شود. ویژگی‌های چهارگانهٔ 10-MDP (Fig 6 مقاله): گروه methacrylate برای polymerization، گروه فسفات برای bonding یونی به Ca، spacer کربنی بلند که ممانعت فضایی را رفع و hydrophobicity می‌دهد، و اثر etching قابل‌توجهی که هم microretention و هم آزادشدن Caِ لازم برای nanolayering را می‌سازد. ضعف 10-MDP: حساسیت دو استر آن به تخریب hydrolytic — و analogueهای MF8P/MF12P (فلورو-کربنی، Kuraray) با پایداری و باند بهتر، هنوز تجاری نشده‌اند.
 
 :::
+
+<figure>
+  <img src="/images/alphabet/ch02-fig-interfaces.png" alt="میکروگراف‌های SEM و TEM سطح تماس باند در adhesiveهای مختلف از مقاله" loading="lazy" />
+  <figcaption>میکروگراف‌های واقعی SEM/TEM از خود مقاله: سطح تماس باند در adhesiveهای مختلف — از hybrid layer ضخیم E&amp;R تا nanolayering نمک‌های 10-MDP-Ca که در TEM دیده می‌شود. منبع: فایل PDF مقاله (Van Meerbeek 2020).</figcaption>
+</figure>
 
 ### طبقه‌بندی و تراز plus/minus امروز
 

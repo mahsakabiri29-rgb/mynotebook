@@ -94,7 +94,7 @@ seal دنتین جلوی میکروشت باکتری و حساسیت را می�
 
 <!-- ⚠️ تصویر آموزشی — بازطراحی سادهٔ منطق چهارگانه؛ تصویر واقعی مطالعه نیست -->
 <figure class="anim reveal">
-  <svg viewBox="0 0 660 250" style="max-width:660px;display:block;margin-inline:auto;overflow:visible">
+  <svg viewBox="0 0 660 250" style="max-width:660px;direction:rtl;display:block;margin-inline:auto;overflow:visible">
     <rect x="14" y="20" width="150" height="120" rx="12" fill="#eef3fa" stroke="#1b4079" stroke-width="1.6"/>
     <text x="89" y="48" text-anchor="middle" font-size="12" font-weight="800" fill="#1b4079">۱. بستر تازه</text>
     <text x="89" y="72" text-anchor="middle" font-size="10" fill="#1c212b">دنتین تازه = بهترین باند</text>
@@ -176,7 +176,7 @@ seal دنتین جلوی میکروشت باکتری و حساسیت را می�
 
 <!-- ⚠️ تصویر آموزشی — تایم‌لاین IDS؛ بازطراحی مفهومی، تصویر واقعی مطالعه نیست -->
 <figure class="anim reveal">
-  <svg viewBox="0 0 680 190" style="max-width:680px;display:block;margin-inline:auto;overflow:visible">
+  <svg viewBox="0 0 680 190" style="max-width:680px;direction:rtl;display:block;margin-inline:auto;overflow:visible">
     <line x1="40" y1="95" x2="640" y2="95" stroke="#0f3a4a" stroke-width="2.5"/>
     <g font-size="10.5" text-anchor="middle">
       <circle cx="80" cy="95" r="7" fill="#5d8dab"/><text x="80" y="70" font-weight="700" fill="#0f3a4a">تراش</text><text x="80" y="122" fill="#5b6472">دنتین تازه</text>

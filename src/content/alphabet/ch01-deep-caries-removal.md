@@ -90,6 +90,11 @@ DIAGNOdent (لیزر فلورسانس ۶۵۵ نانومتر) محصولات مت
 
 :::
 
+<figure>
+  <img src="/images/alphabet/ch01-fig6-dye.png" alt="تصاویر بالینی رنگ‌آمیزی caries detector و reading های DIAGNOdent در عمق‌های مختلف" loading="lazy" />
+  <figcaption>تصاویر بالینی از مقاله: رنگ‌آمیزی با caries-detecting dye در عمق‌های مختلف و ظاهر حفره در مراحل تراش — قرمز تیره (بردار)، صورتی ملایم (بماند). منبع: فایل PDF مقاله.</figcaption>
+</figure>
+
 ### اهداف درمانی پنج‌گانه برای پوسیدگی عمیق
 
 :::evidence
@@ -118,9 +123,23 @@ DIAGNOdent (لیزر فلورسانس ۶۵۵ نانومتر) محصولات مت
 
 ## ۶. یادگیری تصویری
 
+**شکل‌های اصلی مقاله:**
+
+<figure>
+  <img src="/images/alphabet/ch01-fig4-zones.png" alt="شکل ۴ مقاله: شماتیک هیستولوژیک لایه‌های ضایعهٔ پوسیدگی و نواحی ترمیمی" loading="lazy" />
+  <figcaption>شکل ۴ از خود مقاله (Alleman &amp; Magne 2012): شماتیک لایه‌های ضایعهٔ پوسیدگی عمیق — از outer carious تا transparent zone — و منطق انتخاب endpoint. منبع: فایل PDF مقاله.</figcaption>
+</figure>
+
+<figure>
+  <img src="/images/alphabet/ch01-fig5-depth.png" alt="شکل ۵ مقاله: عمق‌سنجی نواحی و ابزارها" loading="lazy" />
+  <figcaption>شکل ۵ از مقاله: اندازه‌گیری عمق نواحی (از superficial تا عمیق نزدیک پالپ) — مبنای قانون توقفِ «بیش از ۵ میلی‌متر». منبع: فایل PDF مقاله.</figcaption>
+</figure>
+
+**بازطراحی آموزشی (برای مرور سریع):**
+
 <!-- ⚠️ تصویر آموزشی — شماتیک مفهومی بازطراحی‌شده از Fig 4 مقاله؛ تصویر واقعی مطالعه نیست -->
 <figure class="anim reveal">
-  <svg viewBox="0 0 360 300" style="max-width:380px;display:block;margin-inline:auto;overflow:visible">
+  <svg viewBox="0 0 360 300" style="max-width:380px;direction:rtl;display:block;margin-inline:auto;overflow:visible">
     <rect x="40" y="16" width="150" height="34" rx="6" fill="#eef3fa" stroke="#1b4079" stroke-width="1.6"/>
     <text x="115" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#1b4079">enamel + DEJ</text>
     <rect x="40" y="54" width="150" height="40" rx="5" fill="#f3ecdf" stroke="#d9d2c2"/>
