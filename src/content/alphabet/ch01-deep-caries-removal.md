@@ -96,11 +96,6 @@ DIAGNOdent (لیزر فلورسانس ۶۵۵ نانومتر) محصولات مت
 
 :::
 
-<figure>
-  <img src="/images/alphabet/ch01-fig-diagnodo.png" alt="نمودار مقادیر DIAGNOdent در دنتین سطحی و میانی-عمیق" loading="lazy" />
-  <figcaption>از خود مقاله — نمودار مقادیر DIAGNOdent: دنتین سطحی (میانگین حدود ۸) در برابر دنتین میانی تا عمیق (حدود ۱۹ با پراکندگی زیاد). منبع: فایل PDF مقاله.</figcaption>
-</figure>
-
 ### اهداف درمانی پنج‌گانه برای پوسیدگی عمیق
 
 :::evidence
@@ -128,23 +123,6 @@ DIAGNOdent (لیزر فلورسانس ۶۵۵ نانومتر) محصولات مت
 </div>
 
 ## ۶. یادگیری تصویری
-
-**شکل‌های اصلی مقاله** (برش مستقیم از فایل PDF؛ کپشن‌ها بر اساس محتوای تصویر):
-
-<figure>
-  <img src="/images/alphabet/ch01-fig-layers.png" alt="شماتیک دو لایهٔ ضایعهٔ پوسیدگی با نمونهٔ رنگ‌آمیزی" loading="lazy" />
-  <figcaption>از خود مقاله — شماتیک مفهوم دو لایهٔ ضایعه (بر اساس Fusayama): outer carious dentin آلوده و دناتوره در برابر inner carious dentin قابل‌بازمعدنی‌شدن، همراه با نمونهٔ رنگ‌آمیزی. منبع: فایل PDF مقاله.</figcaption>
-</figure>
-
-<figure>
-  <img src="/images/alphabet/ch01-fig-zones.png" alt="میکروگراف‌های مقایسه‌ای نواحی ضایعه با جدول زون‌ها" loading="lazy" />
-  <figcaption>از خود مقاله — میکروگراف‌های مقایسه‌ای مقاطع ضایعه و جدول مشخصات زون‌ها (از outer تا subtransparent). منبع: فایل PDF مقاله.</figcaption>
-</figure>
-
-<figure>
-  <img src="/images/alphabet/ch01-fig-clinical.png" alt="تصاویر بالینی حفره در مراحل تراش با رنگ‌آمیزی" loading="lazy" />
-  <figcaption>از خود مقاله — تصاویر بالینی حفره در مراحل مختلف تراش با رنگ‌آمیزی caries detector: از قرمز تیره (برداشته شود) تا صورتی ملایم (باقی بماند). منبع: فایل PDF مقاله.</figcaption>
-</figure>
 
 **مرور سریع — نقشهٔ لایه‌ها** (بازطراحی آموزشی؛ نه تصویر مطالعه):
 
