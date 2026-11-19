@@ -5,7 +5,13 @@ import SectionIndex from '../../components/SectionIndex.astro';
 import { SITE, SECTIONS } from '../../config';
 
 const meta = SECTIONS.professionals;
-const projects = [SECTIONS.failsafe, SECTIONS.abrz];
+const projects = [SECTIONS.failsafe, SECTIONS.abrz, SECTIONS.alphabet];
+
+const projectText: Record<string, string> = {
+  failsafe: 'برنامه‌ریزی برای شکست درمان و درمان‌های ترمیم‌پذیر — مقاله‌به‌مقاله.',
+  abrz: 'ناحیهٔ مقاوم به اسید-باز در سطح چسبندگی ترمیم‌های چسبنده — مقاله‌به‌مقاله.',
+  alphabet: 'The Alphabet of Adhesive Dentistry — مسیر یادگیری فصل‌به‌فصل با تحلیل انتقادی مقاله‌ها.',
+};
 ---
 
 <Base title={`${meta.title} — ${SITE.name}`} description={meta.description}>
@@ -16,11 +22,7 @@ const projects = [SECTIONS.failsafe, SECTIONS.abrz];
           <a class="project" href={p.href}>
             <p class="project-kicker">{p.kicker}</p>
             <h2>پروژهٔ {p.title}</h2>
-            <p>
-              {p.slug === 'failsafe'
-                ? 'برنامه‌ریزی برای شکست درمان و درمان‌های ترمیم‌پذیر — مقاله‌به‌مقاله.'
-                : 'ناحیهٔ مقاوم به اسید-باز در سطح چسبندگی ترمیم‌های چسبنده — مقاله‌به‌مقاله.'}
-            </p>
+            <p>{projectText[p.slug]}</p>
             <span class="project-more">ورود به پروژه ←</span>
           </a>
         ))

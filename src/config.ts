@@ -62,6 +62,16 @@ export const SECTIONS = {
     description:
       'پروژهٔ پژوهشی ABRZ: ناحیهٔ مقاوم به اسید-باز در سطح چسبندگی ترمیم‌های چسبنده.',
   },
+  alphabet: {
+    slug: 'alphabet',
+    href: '/alphabet',
+    title: 'الفبای ادهزیو',
+    kicker: 'پروژهٔ آموزشی: The Alphabet of Adhesive Dentistry',
+    intro:
+      'مسیر یادگیری مستمر در Adhesive Dentistry: مطالعهٔ مقاله‌های معتبر، تحلیل انتقادی شواهد و پیونددانن آن‌ها با تصمیم‌های بالینی — فصل‌به‌فصل.',
+    description:
+      'پروژهٔ آموزشی الفبای ادهزیو دنتیستری: مسیر یادگیری فصل‌به‌فصل در Adhesive Dentistry.',
+  },
 } as const;
 
 export type SectionKey = keyof typeof SECTIONS;
