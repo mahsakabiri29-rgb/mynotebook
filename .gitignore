@@ -16,3 +16,7 @@ Thumbs.db
 # وضعیت ابزار امنیتی
 .mimosa/
 .materials-state.json
+
+# خروجی نسخهٔ قابل‌حمل
+dist-html/
+*.zip
