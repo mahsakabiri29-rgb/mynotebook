@@ -97,8 +97,8 @@ DIAGNOdent (لیزر فلورسانس ۶۵۵ نانومتر) محصولات مت
 :::
 
 <figure>
-  <img src="/images/alphabet/ch01-fig6-dye.png" alt="تصاویر بالینی رنگ‌آمیزی caries detector و reading های DIAGNOdent در عمق‌های مختلف" loading="lazy" />
-  <figcaption>تصاویر بالینی از مقاله: رنگ‌آمیزی با caries-detecting dye در عمق‌های مختلف و ظاهر حفره در مراحل تراش — قرمز تیره (بردار)، صورتی ملایم (بماند). منبع: فایل PDF مقاله.</figcaption>
+  <img src="/images/alphabet/ch01-fig-diagnodo.png" alt="نمودار مقادیر DIAGNOdent در دنتین سطحی و میانی-عمیق" loading="lazy" />
+  <figcaption>از خود مقاله — نمودار مقادیر DIAGNOdent: دنتین سطحی (میانگین حدود ۸) در برابر دنتین میانی تا عمیق (حدود ۱۹ با پراکندگی زیاد). منبع: فایل PDF مقاله.</figcaption>
 </figure>
 
 ### اهداف درمانی پنج‌گانه برای پوسیدگی عمیق
@@ -129,56 +129,34 @@ DIAGNOdent (لیزر فلورسانس ۶۵۵ نانومتر) محصولات مت
 
 ## ۶. یادگیری تصویری
 
-**شکل‌های اصلی مقاله:**
+**شکل‌های اصلی مقاله** (برش مستقیم از فایل PDF؛ کپشن‌ها بر اساس محتوای تصویر):
 
 <figure>
-  <img src="/images/alphabet/ch01-fig4-zones.png" alt="شکل ۴ مقاله: شماتیک هیستولوژیک لایه‌های ضایعهٔ پوسیدگی و نواحی ترمیمی" loading="lazy" />
-  <figcaption>شکل ۴ از خود مقاله (Alleman &amp; Magne 2012): شماتیک لایه‌های ضایعهٔ پوسیدگی عمیق — از outer carious تا transparent zone — و منطق انتخاب endpoint. منبع: فایل PDF مقاله.</figcaption>
+  <img src="/images/alphabet/ch01-fig-layers.png" alt="شماتیک دو لایهٔ ضایعهٔ پوسیدگی با نمونهٔ رنگ‌آمیزی" loading="lazy" />
+  <figcaption>از خود مقاله — شماتیک مفهوم دو لایهٔ ضایعه (بر اساس Fusayama): outer carious dentin آلوده و دناتوره در برابر inner carious dentin قابل‌بازمعدنی‌شدن، همراه با نمونهٔ رنگ‌آمیزی. منبع: فایل PDF مقاله.</figcaption>
 </figure>
 
 <figure>
-  <img src="/images/alphabet/ch01-fig5-depth.png" alt="شکل ۵ مقاله: عمق‌سنجی نواحی و ابزارها" loading="lazy" />
-  <figcaption>شکل ۵ از مقاله: اندازه‌گیری عمق نواحی (از superficial تا عمیق نزدیک پالپ) — مبنای قانون توقفِ «بیش از ۵ میلی‌متر». منبع: فایل PDF مقاله.</figcaption>
+  <img src="/images/alphabet/ch01-fig-zones.png" alt="میکروگراف‌های مقایسه‌ای نواحی ضایعه با جدول زون‌ها" loading="lazy" />
+  <figcaption>از خود مقاله — میکروگراف‌های مقایسه‌ای مقاطع ضایعه و جدول مشخصات زون‌ها (از outer تا subtransparent). منبع: فایل PDF مقاله.</figcaption>
 </figure>
 
-**بازطراحی آموزشی (برای مرور سریع):**
-
-<!-- ⚠️ تصویر آموزشی — شماتیک مفهومی بازطراحی‌شده از Fig 4 مقاله؛ تصویر واقعی مطالعه نیست -->
-<figure class="anim reveal">
-  <svg viewBox="0 0 360 300" style="max-width:380px;direction:rtl;display:block;margin-inline:auto;overflow:visible">
-    <rect x="40" y="16" width="150" height="34" rx="6" fill="#eef3fa" stroke="#1b4079" stroke-width="1.6"/>
-    <text x="115" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#1b4079">enamel + DEJ</text>
-    <rect x="40" y="54" width="150" height="40" rx="5" fill="#f3ecdf" stroke="#d9d2c2"/>
-    <text x="115" y="79" text-anchor="middle" font-size="11" font-weight="700" fill="#5b6472">superficial dentin سالم</text>
-    <rect x="40" y="98" width="150" height="36" rx="5" fill="#8f3b3b" opacity="0.82"/>
-    <text x="115" y="121" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">outer carious — بردار</text>
-    <rect x="40" y="138" width="150" height="30" rx="5" fill="#c98a7a" opacity="0.8"/>
-    <text x="115" y="158" text-anchor="middle" font-size="10.5" fill="#fff">turbid layer</text>
-    <rect x="40" y="172" width="150" height="30" rx="5" fill="#17706e" opacity="0.35"/>
-    <text x="115" y="192" text-anchor="middle" font-size="10.5" fill="#1c212b">transparent zone — بماند</text>
-    <rect x="40" y="206" width="150" height="26" rx="5" fill="#17706e" opacity="0.22"/>
-    <text x="115" y="224" text-anchor="middle" font-size="10.5" fill="#1c212b">subtransparent zone</text>
-    <rect x="40" y="236" width="150" height="34" rx="5" fill="#e9edf3" stroke="#cdd3dd"/>
-    <text x="115" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#5b6472">dentin سالم + پالپ</text>
-    <circle cx="115" cy="286" r="10" fill="#8f3b3b"/>
-    <text x="138" y="291" font-size="11" font-weight="700" fill="#8f3b3b">پالپ</text>
-    <!-- خط‌کش عمق -->
-    <line x1="230" y1="54" x2="230" y2="270" stroke="#8a93a3" stroke-width="1.2"/>
-    <text x="240" y="80" font-size="10" fill="#5b6472">superficial</text>
-    <text x="240" y="120" font-size="10" fill="#5b6472">میانی ۳–۴ mm</text>
-    <text x="240" y="185" font-size="10" fill="#5b6472">عمیق ۴–۵ mm</text>
-    <text x="240" y="230" font-size="10" fill="#8f3b3b">&gt;۵ mm کنار پالپ: توقف!</text>
-    <!-- قاب peripheral seal -->
-    <rect x="34" y="12" width="162" height="86" rx="8" fill="none" stroke="#17706e" stroke-width="2" stroke-dasharray="6 4" class="zone"/>
-    <text x="270" y="46" font-size="10.5" font-weight="700" fill="#17706e">ناحیهٔ seal:</text>
-    <text x="270" y="63" font-size="10" fill="#5b6472">عاری از رنگ</text>
-    <text x="270" y="80" font-size="10" fill="#5b6472">باند ۴۵–۵۵ MPa</text>
-    <text x="270" y="115" font-size="10.5" font-weight="700" fill="#17706e">داخل ناحیه:</text>
-    <text x="270" y="132" font-size="10" fill="#5b6472">صورتی ملایم بماند</text>
-    <text x="270" y="149" font-size="10" fill="#5b6472">باند ~۳۰ MPa</text>
-  </svg>
-  <figcaption>تصویر آموزشی (بازطراحی مفهومی از Fig 4 مقاله — تصویر واقعی مطالعه نیست): لایه‌های ضایعهٔ عمیق، ناحیهٔ seal تپنده، و خط‌کش عمق. تراش در سه نوار سبزِ روی باید متوقف شود، نه ادامه پیدا کند.</figcaption>
+<figure>
+  <img src="/images/alphabet/ch01-fig-clinical.png" alt="تصاویر بالینی حفره در مراحل تراش با رنگ‌آمیزی" loading="lazy" />
+  <figcaption>از خود مقاله — تصاویر بالینی حفره در مراحل مختلف تراش با رنگ‌آمیزی caries detector: از قرمز تیره (برداشته شود) تا صورتی ملایم (باقی بماند). منبع: فایل PDF مقاله.</figcaption>
 </figure>
+
+**مرور سریع — نقشهٔ لایه‌ها** (بازطراحی آموزشی؛ نه تصویر مطالعه):
+
+<div dir="rtl" style="margin:1.5em 0;border:1px solid #d9d2c2;border-radius:12px;overflow:hidden;font-size:0.9rem;text-align:center;line-height:1.9;">
+  <div style="background:#eef3fa;padding:0.55rem 1rem;border-bottom:1px solid #d9d2c2;"><strong>مینا + DEJ</strong> — بخش بالایی ناحیهٔ seal</div>
+  <div style="background:#f3ecdf;padding:0.55rem 1rem;border-bottom:1px solid #d9d2c2;"><strong>دنتین سطحی سالم</strong> — عاری از رنگ · باند حدود ۴۵ تا ۵۵ MPa</div>
+  <div style="background:#f6ecec;padding:0.55rem 1rem;border-bottom:1px solid #d9d2c2;"><strong style="color:#8f3b3b;">outer carious dentin</strong> — قرمز تیره · برداشته شود</div>
+  <div style="background:#e2efee;padding:0.55rem 1rem;border-bottom:1px solid #d9d2c2;"><strong style="color:#17706e;">inner carious dentin</strong> — صورتی ملایم · بماند · باند حدود ۳۰ MPa</div>
+  <div style="background:#ecf5f4;padding:0.5rem 1rem;border-bottom:1px solid #d9d2c2;"><span style="color:#17706e;">transparent / subtransparent zone</span> — نرم‌تر از دنتین سالم؛ با معیار «سفتی» قربانی می‌شود</div>
+  <div style="background:#e9edf3;padding:0.55rem 1rem;"><strong>دنتین سالم + پالپ</strong> — عمق بیش از ۵ میلی‌متر با رنگ قرمز = توقف تراش</div>
+</div>
+<p style="font-size:0.82rem;color:#6e6858;text-align:center;">بازطراحی آموزشی بر اساس شکل‌های مقاله — برای مرور سریع.</p>
 
 **جدول راهنمای DIAGNOdent (از مقاله):**
 
