@@ -2,11 +2,11 @@
 //  نسخهٔ HTML قابل‌حمل — از dist یک کپی تک‌پوشه‌ای می‌سازد که با
 //  دابل‌کلیک روی index.html بدون هیچ سروری باز می‌شود:
 //    ۱) کپی dist → dist-html
-//    ۲) بازنویسی آدرس‌های مطلق (src="/x") به نسبی بر حسب عمق صفحه
-//    ۳) اصلاح fetch('/search.json') در جاوااسکریپت برای file://
-//  پس از اجرا: dist-html را زیپ کنید یا همان‌جا باز کنید.
+//    ۲) لینک‌های داخلی صفحات ← مستقیم به <صفحه>/index.html
+//    ۳) مسیرهای asset (css/js/img) ← نسبی بر حسب عمق صفحه
+//    ۴) search.json داخل هر پوشهٔ صفحه کپی می‌شود تا جستجو هم کار کند
 // ─────────────────────────────────────────────────────────────
-import { readdirSync, statSync, readFileSync, writeFileSync, cpSync, rmSync } from 'node:fs';
+import { readdirSync, statSync, readFileSync, writeFileSync, cpSync, rmSync, copyFileSync } from 'node:fs';
 import path from 'node:path';
 
 const SRC = 'dist';
@@ -16,6 +16,10 @@ rmSync(OUT, { recursive: true, force: true });
 cpSync(SRC, OUT, { recursive: true });
 
 let htmlCount = 0;
+const pageDirs = [];
+
+const isAsset = (p) =>
+  /^\/(_astro|images|favicon\.svg|search\.json)/.test(p) || /\.[a-z0-9]+$/i.test(p.replace(/\/$/, ''));
 
 const walk = (dir) => {
   for (const name of readdirSync(dir)) {
@@ -29,14 +33,19 @@ const walk = (dir) => {
       const rel = path.relative(OUT, f);
       const depth = rel.split(path.sep).length - 1;
       const prefix = '../'.repeat(depth) || './';
+      pageDirs.push(path.dirname(f));
+
       let html = readFileSync(f, 'utf8');
-      // آدرس‌های مطلق ریشه‌ای → نسبی
-      html = html.replace(/(src|href)="\/(?!\/)/g, `$1="${prefix}`);
+      html = html.replace(/(src|href)="\/(?!\/)([^"]*)"/g, (m, attr, p) => {
+        if (isAsset('/' + p)) return `${attr}="${prefix}${p}"`;
+        // لینک داخلی به صفحه → مستقیم به فایل index.html آن
+        const clean = p.replace(/\/+$/, '');
+        return `${attr}="${prefix}${clean}/index.html"`;
+      });
       writeFileSync(f, html);
       htmlCount++;
     } else if (name.endsWith('.js')) {
       let js = readFileSync(f, 'utf8');
-      // مسیر مطلق fetch ایندکس جستجو → نسبی به صفحه
       js = js
         .replaceAll('"/search.json"', 'new URL("search.json",document.baseURI).toString()')
         .replaceAll("'/search.json'", 'new URL("search.json",document.baseURI).toString()');
@@ -46,5 +55,11 @@ const walk = (dir) => {
 };
 
 walk(OUT);
+
+// جستجوی آفلاین: search.json کنار هر صفحه
+for (const d of pageDirs) {
+  copyFileSync(path.join(OUT, 'search.json'), path.join(d, 'search.json'));
+}
+
 console.log(`✔ ${htmlCount} صفحه بازنویسی شد → ${OUT}/`);
 console.log('برای باز کردن بدون سرور: dist-html/index.html را دابل‌کلیک کنید.');
