@@ -1,11 +1,11 @@
 ' Desktop launcher: make sure the local site server is running, then open it in the default browser.
-' Works from any browser (Firefox/Chrome/Edge) because the site is served over http://localhost.
+' Robust version: waits up to ~90s, logs dev-server output to C:\daftarche\.dev-log.txt for troubleshooting.
 Dim shell, fso
 Set shell = CreateObject("WScript.Shell")
 Set fso = CreateObject("Scripting.FileSystemObject")
 
-projectDir = fso.GetParentFolderName(fso.GetParentFolderName(WScript.ScriptFullName))
-shell.CurrentDirectory = projectDir
+' Always work through the ASCII junction path
+shell.CurrentDirectory = "C:\daftarche"
 
 Function SiteUp()
   On Error Resume Next
@@ -23,9 +23,9 @@ Function SiteUp()
 End Function
 
 If Not SiteUp() Then
-  shell.Run "cmd /c npm run dev", 0, False
+  shell.Run "cmd /c npm run dev > C:\daftarche\.dev-log.txt 2>&1", 0, False
   Dim i
-  For i = 1 To 12
+  For i = 1 To 45
     WScript.Sleep 2000
     If SiteUp() Then Exit For
   Next

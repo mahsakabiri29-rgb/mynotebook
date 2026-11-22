@@ -20,3 +20,4 @@ Thumbs.db
 # خروجی نسخهٔ قابل‌حمل
 dist-html/
 *.zip
+.dev-log.txt
