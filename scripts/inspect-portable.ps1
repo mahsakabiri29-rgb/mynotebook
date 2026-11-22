@@ -1,14 +1,11 @@
-# بازرسی لینک‌های نسخهٔ قابل‌حمل دسکتاپ
+# Verify desktop portable copy links
 $d = [Environment]::GetFolderPath('Desktop') + '\سایت دفترچه من'
 
-Write-Output '--- root stylesheet:'
-Select-String -Path ($d + '\index.html') -Pattern 'rel="stylesheet" href="([^"]+)"' | ForEach-Object { $_.Matches[0].Groups[1].Value } | Select-Object -First 2
+$idx = Select-String -Path ($d + '\index.html') -Pattern 'href="([^"]*professionals[^"]*)"' | Select-Object -First 1
+Write-Output ('link-to-professionals: ' + $idx.Matches[0].Groups[1].Value)
 
-Write-Output '--- root link to professionals:'
-Select-String -Path ($d + '\index.html') -Pattern 'href="([^"]*professionals[^"]*)"' | ForEach-Object { $_.Matches[0].Groups[1].Value } | Select-Object -First 3
+$nested = Select-String -Path ($d + '\professionals\index.html') -Pattern 'rel="stylesheet" href="([^"]+)"' | Select-Object -First 1
+Write-Output ('nested-css: ' + $nested.Matches[0].Groups[1].Value)
 
-Write-Output '--- nested stylesheet (professionals/index.html):'
-Select-String -Path ($d + '\professionals\index.html') -Pattern 'rel="stylesheet" href="([^"]+)"' | ForEach-Object { $_.Matches[0].Groups[1].Value } | Select-Object -First 2
-
-Write-Output '--- nested link back home:'
-Select-String -Path ($d + '\professionals\index.html') -Pattern 'href="(\./|\.\./)[^"]*"' | ForEach-Object { $_.Matches[0].Groups[1].Value } | Select-Object -First 4
+Write-Output ('stale-nested-copy-exists: ' + (Test-Path ($d + '\dist-html')))
+Write-Output ('search-json-beside-page: ' + (Test-Path ($d + '\professionals\search.json')))
