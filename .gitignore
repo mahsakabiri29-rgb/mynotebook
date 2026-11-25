@@ -21,3 +21,4 @@ Thumbs.db
 dist-html/
 *.zip
 .dev-log.txt
+.launcher.lock
